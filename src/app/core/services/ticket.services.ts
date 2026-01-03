@@ -33,4 +33,9 @@ export class TicketService {
   getComments(ticketId: string) {
     return this.http.get<any[]>(`${this.baseUrl}/${ticketId}/getComments`);
   }
+
+  //for attachments
+  getAttachmentViewUrl(attachmentId: string): string {
+    return `${this.baseUrl}/attachments/view/${attachmentId}`;
+  }
 }

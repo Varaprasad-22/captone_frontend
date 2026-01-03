@@ -76,4 +76,8 @@ export class OnSpecificTicket {
       }
     });
   }
+
+    attachmentUrl(id: string) {
+    return this.ticketService.getAttachmentViewUrl(id);
+  }
 }
