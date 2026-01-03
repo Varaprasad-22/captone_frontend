@@ -1,0 +1,27 @@
+<p>create-ticket works!</p>
+<form [formGroup]="ticketForm" (ngSubmit)="submit()">
+
+  <input type="text" placeholder="Title" formControlName="title">
+
+  <textarea placeholder="Description"
+            formControlName="description"></textarea>
+
+  <select formControlName="Category">
+    <option value="">Select Category</option>
+    <option *ngFor="let c of categories" [value]="c">
+      {{ c }}
+    </option>
+  </select>
+
+  <input type="file" multiple (change)="onFileChange($event)">
+
+  <button type="submit">Create Ticket</button>
+
+  <p class="success" *ngIf="successMessage">
+    {{ successMessage }}
+  </p>
+
+  <p class="error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </p>
+</form>

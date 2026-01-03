@@ -31,7 +31,7 @@ export class LoginComponent {
     if (this.loginForm.invalid) return;
 
     this.auth.login(this.loginForm.value).subscribe({
-      next: () => {this.router.navigate([''])
+      next: () => {this.router.navigate(['/dashboard'])
         this.cdr.detectChanges();
       },
 
