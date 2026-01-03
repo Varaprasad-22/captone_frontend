@@ -7,18 +7,30 @@ export class TicketService {
 
   private baseUrl = `${environment.apiGateway}/tickets`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
- createTicket(formData: FormData) {
+  createTicket(formData: FormData) {
     return this.http.post(`${this.baseUrl}/create`, formData, {
       responseType: 'text'
     });
   }
 
-   getUserTickets() {
+  getUserTickets() {
     const userId = localStorage.getItem('userId');
     return this.http.get<any[]>(
       `${this.baseUrl}/${userId}/getTickets`
     );
+  }
+
+  getTicketById(ticketId: string) {
+    return this.http.get<any>(`${this.baseUrl}/${ticketId}/getTicket`);
+  }
+
+  getAttachments(ticketId: string) {
+    return this.http.get<any[]>(`${this.baseUrl}/${ticketId}/attachments`);
+  }
+
+  getComments(ticketId: string) {
+    return this.http.get<any[]>(`${this.baseUrl}/${ticketId}/comments`);
   }
 }

@@ -40,6 +40,6 @@ export class GetMyTicket {
   }
 
   openTicket(ticketId: string) {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/viewTicket',ticketId]);
   }
 }
