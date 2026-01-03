@@ -14,4 +14,11 @@ export class TicketService {
       responseType: 'text'
     });
   }
+
+   getUserTickets() {
+    const userId = localStorage.getItem('userId');
+    return this.http.get<any[]>(
+      `${this.baseUrl}/${userId}/getTickets`
+    );
+  }
 }

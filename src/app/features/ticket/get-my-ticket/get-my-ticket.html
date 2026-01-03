@@ -1,1 +1,38 @@
 <p>get-my-ticket works!</p>
+<h2>My Tickets</h2>
+
+<p *ngIf="loading">Loading tickets...</p>
+
+<p class="error" *ngIf="errorMessage">
+  {{ errorMessage }}
+</p>
+
+<table *ngIf="!loading && tickets.length">
+  <thead>
+    <tr>
+      <th>Ticket ID</th>
+      <th>Title</th>
+      <th>Category</th>
+      <th>Status</th>
+      <th>Created At</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let t of tickets">
+      <td>{{ t.ticketId }}</td>
+      <td>{{ t.title }}</td>
+      <td>{{ t.category }}</td>
+      <td>{{ t.status }}</td>
+      <td>{{ t.createdAt | date:'short' }}</td>
+      <td>
+        <button (click)="openTicket(t.ticketId)">View</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p *ngIf="!loading && !tickets.length">
+  No tickets found
+</p>
