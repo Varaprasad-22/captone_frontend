@@ -31,6 +31,6 @@ export class TicketService {
   }
 
   getComments(ticketId: string) {
-    return this.http.get<any[]>(`${this.baseUrl}/${ticketId}/comments`);
+    return this.http.get<any[]>(`${this.baseUrl}/${ticketId}/getComments`);
   }
 }

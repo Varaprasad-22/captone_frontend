@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TicketService } from '../../../core/services/ticket.services';
 
@@ -18,29 +18,62 @@ export class OnSpecificTicket {
   comments: any[] = [];
   loading = true;
 
-    constructor(
+  constructor(
     private route: ActivatedRoute,
-    private ticketService: TicketService
+    private ticketService: TicketService,
+    private cdr: ChangeDetectorRef
   ) {
-     this.ticketId = this.route.snapshot.paramMap.get('id')!;
+    this.ticketId = this.route.snapshot.paramMap.get('id')!;
     this.loadAll();
   }
 
   loadAll() {
-    this.ticketService.getTicketById(this.ticketId).subscribe(res => {
-      this.ticket = res;
-      this.loading = false;
+    this.ticketService.getTicketById(this.ticketId).subscribe({
+      next: (res) => {
+        this.ticket = res;
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
     });
 
-    this.ticketService.getAttachments(this.ticketId)
-      .subscribe(res => this.attachments = res);
+    this.ticketService.getAttachments(this.ticketId).subscribe({
+      next: (res) => {
+        this.attachments = res;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.attachments = [];
+        this.cdr.detectChanges();
+      }
+    });
 
-    this.ticketService.getComments(this.ticketId)
-      .subscribe(res => this.comments = res);
+    this.ticketService.getComments(this.ticketId).subscribe({
+      next: (res) => {
+        this.comments = res;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.comments = [];
+        this.cdr.detectChanges();
+      }
+    });
+
   }
 
   refreshComments() {
-    this.ticketService.getComments(this.ticketId)
-      .subscribe(res => this.comments = res);
+    this.ticketService.getComments(this.ticketId).subscribe({
+      next: (res) => {
+        this.comments = res;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.comments = [];
+        this.cdr.detectChanges();
+      }
+    });
   }
 }

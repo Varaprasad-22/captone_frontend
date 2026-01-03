@@ -75,7 +75,7 @@ export class CreateTicketComponent {
         this.cdr.detectChanges();
         // optional: redirect after few seconds
         setTimeout(() => {
-          this.router.navigate(['/tickets/my']);
+          this.router.navigate(['/tickets/userTicket']);
         }, 2000);
       },
       error: err =>
