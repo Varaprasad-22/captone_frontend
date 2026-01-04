@@ -5,5 +5,6 @@ export interface TicketResponse {
   status: string;
   priority?: string;
   createdAt: string;
+  category:string
   assignedAgentId?: string | null;
 }

@@ -82,6 +82,11 @@ export class TicketService {
       data,
       { responseType: 'text' }
     );
-  }
+  } 
+
+getAllOpenTickets(): Observable<TicketResponse[]> {
+  console.log('SERVICE METHOD HIT'); // 🔥 add this
+  return this.http.get<TicketResponse[]>(`${this.baseUrl}/getAllOpenTickets`);
+}
 
 }
