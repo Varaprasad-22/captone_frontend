@@ -19,34 +19,18 @@
 
   <hr />
 
-    <div class="ticket-section">
-    <h3>Uploaded Files</h3>
+   <div class="ticket-section">
+  <h3>Uploaded Files</h3>
 
-    <p *ngIf="attachments.length === 0">
-      No files uploaded
-    </p>
+  <p *ngIf="attachments.length === 0">No files uploaded</p>
 
-    <div *ngFor="let file of attachments" style="margin-bottom:15px">
-
-      <img *ngIf="file.fileType?.startsWith('image')"
-           [src]="attachmentUrl(file.id)"
-           alt="attachment"
-           style="max-width:300px; border:1px solid #ccc; display:block" />
-
-      <div *ngIf="file.fileType === 'application/pdf'">
-        <a [href]="attachmentUrl(file.id)" target="_blank">
-           View PDF  {{ file.fileName }}
-        </a>
-      </div>
-      <div *ngIf="!file.fileType?.startsWith('image') 
-                  && file.fileType !== 'application/pdf'">
-        <a [href]="attachmentUrl(file.id)" target="_blank">
-           Download {{ file.fileName }}
-        </a>
-      </div>
-
-    </div>
+  <div *ngFor="let file of attachments" style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+    <span>{{ file.fileName }}</span>
+    <button (click)="downloadFile(file)" style="cursor: pointer;">
+      Download
+    </button>
   </div>
+</div>
 
   <hr />
 

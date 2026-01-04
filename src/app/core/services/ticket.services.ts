@@ -34,8 +34,11 @@ export class TicketService {
     return this.http.get<any[]>(`${this.baseUrl}/${ticketId}/getComments`);
   }
 
-  //for attachments
-  getAttachmentViewUrl(attachmentId: string): string {
-    return `${this.baseUrl}/attachments/view/${attachmentId}`;
-  }
+
+// ticket.service.ts
+downloadAttachment(attachmentId: string) {
+  return this.http.get(`${this.baseUrl}/attachments/view/${attachmentId}`, {
+    responseType: 'blob'
+  });
+}
 }
