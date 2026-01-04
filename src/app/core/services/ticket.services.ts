@@ -41,4 +41,10 @@ downloadAttachment(attachmentId: string) {
     responseType: 'blob'
   });
 }
+
+
+//for updating statuss
+updateTicketStatus(ticketId:string,status:string){
+  return this.http.put(`${this.baseUrl}/${ticketId}/status`,{status});
+}
 }
