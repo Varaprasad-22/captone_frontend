@@ -4,18 +4,19 @@ import { ActivatedRoute } from '@angular/router';
 import { TicketService } from '../../../core/services/ticket.services';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { TicketResponse } from '../../../models/ticket-response.model';
 
 @Component({
   selector: 'app-on-specific-ticket',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './on-specific-ticket.html',
   styleUrl: './on-specific-ticket.css',
 })
 export class OnSpecificTicket {
 
   ticketId!: string;
-  ticket: any;
+  ticket!: TicketResponse;
   attachments: any[] = [];
   comments: any[] = [];
   loading = true;
@@ -23,11 +24,14 @@ export class OnSpecificTicket {
   //see it is for agents 
   role = localStorage.getItem('role');
   isAgent = false;
-
+  isManagerOrAdmin = false;
   newStatus = '';
   commentText = '';
 
-  isInternal=false
+  //for assigning
+  assignedAgentId = '';
+
+  isInternal = false
   statuses = [
     'OPEN', 'ASSIGNED', 'INPROGRESS', 'RESOLVED',
     'CLOSED', 'FAILED', 'ESCALATED', 'BREACHED', 'REOPEN'
@@ -44,13 +48,15 @@ export class OnSpecificTicket {
       this.role === 'ROLE_AGENT' ||
       this.role === 'ROLE_ADMIN' ||
       this.role === 'ROLE_MANAGER';
-
+    this.isManagerOrAdmin =
+      this.role === 'ROLE_MANAGER' ||
+      this.role === 'ROLE_ADMIN';
     this.loadAll();
   }
 
   loadAll() {
     this.ticketService.getTicketById(this.ticketId).subscribe({
-      next: (res) => {
+      next: (res: TicketResponse) => {
         this.ticket = res;
         this.loading = false;
         this.newStatus = res.status;
@@ -131,16 +137,34 @@ export class OnSpecificTicket {
 
 
   //wirting of comments
-addComment() {
-  if (!this.commentText.trim()) return;
+  addComment() {
+    if (!this.commentText.trim()) return;
 
-  this.ticketService
-    .addComment(this.ticketId, this.commentText, this.isInternal)
-    .subscribe(() => {
-      this.commentText = '';
-      this.isInternal = false;
-      this.refreshComments();
+    this.ticketService
+      .addComment(this.ticketId, this.commentText, this.isInternal)
+      .subscribe(() => {
+        this.commentText = '';
+        this.isInternal = false;
+        this.refreshComments();
+      });
+  }
+
+  assignTicket(): void {
+    if (!this.assignedAgentId.trim()) return;
+
+    this.ticketService.assignTicket({
+      ticketId: this.ticketId,
+      agentId: this.assignedAgentId
+    }).subscribe({
+      next: () => {
+        alert('Ticket assigned successfully');
+        this.assignedAgentId = '';
+        this.loadAll();
+      },
+      error: () => {
+        alert('Assignment failed');
+      }
     });
-}
+  }
 
 }

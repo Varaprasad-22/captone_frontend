@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { environment } from "../../../environments/environments";
 import { HttpClient } from "@angular/common/http";
 import { AuthService } from "./auth.services";
+import { TicketResponse } from "../../models/ticket-response.model";
 
 @Injectable({ providedIn: 'root' })
 export class TicketService {
@@ -36,7 +37,7 @@ const userId=user.id??'';
   }
 
   getTicketById(ticketId: string) {
-    return this.http.get<any>(`${this.baseUrl}/${ticketId}/getTicket`);
+    return this.http.get<TicketResponse>(`${this.baseUrl}/${ticketId}/getTicket`);
   }
 
   getAttachments(ticketId: string) {
@@ -71,5 +72,8 @@ addComment(ticketId: string, text: string, isInternal: boolean) {
     }
   );
 }
+
+//now for assigning ticket 
+
 
 }
