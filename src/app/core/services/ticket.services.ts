@@ -47,4 +47,16 @@ downloadAttachment(attachmentId: string) {
 updateTicketStatus(ticketId:string,status:string){
   return this.http.put(`${this.baseUrl}/${ticketId}/status`,{status});
 }
+
+//for the writing of comments;
+addComment(ticketId: string, text: string, isInternal: boolean) {
+  return this.http.post(
+    `${this.baseUrl}/${ticketId}/comments`,
+    {
+      text,
+      isInternal
+    }
+  );
+}
+
 }

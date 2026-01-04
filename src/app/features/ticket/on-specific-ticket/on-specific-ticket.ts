@@ -3,11 +3,12 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TicketService } from '../../../core/services/ticket.services';
 import { DomSanitizer } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-on-specific-ticket',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './on-specific-ticket.html',
   styleUrl: './on-specific-ticket.css',
 })
@@ -26,6 +27,7 @@ export class OnSpecificTicket {
   newStatus = '';
   commentText = '';
 
+  isInternal=false
   statuses = [
     'OPEN', 'ASSIGNED', 'INPROGRESS', 'RESOLVED',
     'CLOSED', 'FAILED', 'ESCALATED', 'BREACHED', 'REOPEN'
@@ -125,4 +127,20 @@ export class OnSpecificTicket {
         alert('Status updated');
       });
   }
+
+
+
+  //wirting of comments
+addComment() {
+  if (!this.commentText.trim()) return;
+
+  this.ticketService
+    .addComment(this.ticketId, this.commentText, this.isInternal)
+    .subscribe(() => {
+      this.commentText = '';
+      this.isInternal = false;
+      this.refreshComments();
+    });
+}
+
 }

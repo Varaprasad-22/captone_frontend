@@ -56,14 +56,34 @@
     </p>
 
     <div *ngFor="let comment of comments" class="comment-box">
+      <div *ngIf="!comment.internal || isAgent">
       <p><b>{{ comment.user }}</b></p>
-      <p>{{ comment.message }}</p>
+      <p>{{ comment.text }}</p>
       <small>{{ comment.createdAt | date:'short' }}</small>
       <hr />
+      </div>
     </div>
   </div>
 
 </div>
+
+<div *ngIf="isAgent || role === 'ROLE_USER'">
+
+  <textarea
+    [(ngModel)]="commentText"
+    placeholder="Write comment">
+  </textarea>
+
+  <div *ngIf="isAgent">
+    <label>
+      <input type="checkbox" [(ngModel)]="isInternal" />
+      Internal comment (agents only)
+    </label>
+  </div>
+
+  <button (click)="addComment()">Add Comment</button>
+</div>
+
 
 <div *ngIf="!loading && !ticket">
   <p>Failed to load ticket details.</p>
