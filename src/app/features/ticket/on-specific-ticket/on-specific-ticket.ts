@@ -5,6 +5,7 @@ import { TicketService } from '../../../core/services/ticket.services';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { TicketResponse } from '../../../models/ticket-response.model';
+import { Priority } from '../../../models/assign-ticket.model';
 
 @Component({
   selector: 'app-on-specific-ticket',
@@ -30,7 +31,7 @@ export class OnSpecificTicket {
 
   //for assigning
   assignedAgentId = '';
-
+  priority: Priority = 'LOW';
   isInternal = false
   statuses = [
     'OPEN', 'ASSIGNED', 'INPROGRESS', 'RESOLVED',
@@ -154,7 +155,8 @@ export class OnSpecificTicket {
 
     this.ticketService.assignTicket({
       ticketId: this.ticketId,
-      agentId: this.assignedAgentId
+      agentId: this.assignedAgentId,
+      priority: this.priority
     }).subscribe({
       next: () => {
         alert('Ticket assigned successfully');
