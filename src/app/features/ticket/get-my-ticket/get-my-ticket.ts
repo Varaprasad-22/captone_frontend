@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { TicketService } from '../../../core/services/ticket.services';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../core/services/auth.services';
 
 @Component({
   selector: 'app-get-my-ticket',
@@ -11,19 +12,28 @@ import { CommonModule } from '@angular/common';
 })
 export class GetMyTicket {
 
-  tickets:any;
-  loading;
-  errorMessage;
+  tickets:any[]=[];
+  loading=false;
+  errorMessage='';
+
+  role!:string;
+  isAgent=false;
 
   constructor(
     private ticketService: TicketService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService:AuthService
   ) {
- 
-    this.tickets = [];
-    this.loading = true;
-    this.errorMessage = '';
+    const user = this.authService.getUser();
+this.role = user.role ?? ''; 
+    this.isAgent = this.role === 'ROLE_AGENT';
+
+    this.loadTickets();
+  }
+
+  loadTickets(){
+
 
     this.ticketService.getUserTickets().subscribe({
       next: (res) => {
@@ -37,8 +47,8 @@ export class GetMyTicket {
         this.cdr.detectChanges();
       }
     });
+  
   }
-
   openTicket(ticketId: string) {
     this.router.navigate(['/viewTicket',ticketId]);
   }

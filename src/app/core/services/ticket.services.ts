@@ -1,13 +1,16 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../../environments/environments";
 import { HttpClient } from "@angular/common/http";
+import { AuthService } from "./auth.services";
 
 @Injectable({ providedIn: 'root' })
 export class TicketService {
 
   private baseUrl = `${environment.apiGateway}/tickets`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private authService:AuthService
+  ) { }
 
   createTicket(formData: FormData) {
     return this.http.post(`${this.baseUrl}/create`, formData, {
@@ -16,7 +19,17 @@ export class TicketService {
   }
 
   getUserTickets() {
-    const userId = localStorage.getItem('userId');
+        const user = this.authService.getUser();
+const role = user.role ?? ''; 
+const userId=user.id??'';
+    // const userId = localStorage.getItem('userId');
+        if (role === 'ROLE_AGENT') {
+      return this.http.get<any[]>(
+   `${this.baseUrl}/${userId}/getAgentTickets`
+
+      );
+    }
+
     return this.http.get<any[]>(
       `${this.baseUrl}/${userId}/getTickets`
     );
