@@ -21,7 +21,7 @@
 
   <tbody>
     <tr *ngFor="let t of tickets">
-      <td>{{ t.id }}</td>
+      <td>{{ t.ticketId }}</td>
       <td>{{ t.title }}</td>
       <td>{{ t.category }}</td>
       <td>{{ t.status }}</td>
@@ -36,7 +36,7 @@
       </td>
 
       <td>
-        <button (click)="viewTicket(t.id)">View</button>
+        <button (click)="viewTicket(t.ticketId)">View</button>
 
        
       </td>

@@ -43,6 +43,7 @@ export class GetAllOpenTickets {
                 console.log('OPEN TICKETS RESPONSE:', res);
         this.tickets = res;
         this.loading = false;
+        this.cdr.detectChanges(); 
       },
       error: () => {
         this.errorMessage = 'Failed to load open tickets';

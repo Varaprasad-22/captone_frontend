@@ -1,5 +1,6 @@
 export interface TicketResponse {
   id: string;
+  ticketId:string;
   title: string;
   description: string;
   status: string;
