@@ -33,7 +33,8 @@ export class AgentDashboardService {
         totalTickets: tickets.length,
         active: workload.find(w => w.status === 'ACTIVE')?.count || 0,
         breached: workload.find(w => w.status === 'BREACHED')?.count || 0,
-        escalations: workload.find(w => w.status === 'ESCALATIONS')?.count || 0
+        escalations: workload.find(w => w.status === 'ESCALATED')?.count || 0,
+        reassigned: workload.find(w => w.status === 'REASSIGNED')?.count || 0
       }))
     );
   }

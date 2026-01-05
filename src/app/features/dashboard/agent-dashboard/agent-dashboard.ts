@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component,ChangeDetectorRef } from '@angular/core';
 import { AgentDashboardService } from '../../../core/services/agent.dashboard.services';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-agent-dashboard',
-  imports: [],
+  imports: [CommonModule,FormsModule],
   templateUrl: './agent-dashboard.html',
   styleUrl: './agent-dashboard.css',
 })
@@ -19,11 +21,14 @@ export class AgentDashboard {
 
   loading = true;
 
-  constructor(private dashboardService: AgentDashboardService) {
+  constructor(private dashboardService: AgentDashboardService,
+    private cdr:ChangeDetectorRef
+  ) {
     this.dashboardService.getAgentDashboard().subscribe({
       next: (res: any) => {
         this.dashboard = res;
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.loading = false;
