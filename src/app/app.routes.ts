@@ -13,6 +13,7 @@ import { SlaEvents } from './features/profiles/sla-events/sla-events';
 import { AdminRegister } from './features/profiles/admin-register/admin-register';
 import { Register } from './features/auth/register/register';
 import { AgentDashboard } from './features/dashboard/agent-dashboard/agent-dashboard';
+import { ManagerDashboard } from './features/dashboard/manager-dashboard/manager-dashboard';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
@@ -22,7 +23,7 @@ export const routes: Routes = [
   // { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
     { path: 'user/dashboard', component: DashboardComponent },
   { path: 'agent/dashboard', component: AgentDashboard },
-  // { path: 'manager/dashboard', component: ManagerDashboardComponent },
+  { path: 'manager/dashboard', component: ManagerDashboard },
   { path: 'tickets/create', component: CreateTicketComponent, canActivate: [authGuard] },
   { path: 'tickets/userTicket', component: GetMyTicket, canActivate: [authGuard] },
   { path: 'viewTicket/:id', component: OnSpecificTicket, canActivate: [authGuard] },
