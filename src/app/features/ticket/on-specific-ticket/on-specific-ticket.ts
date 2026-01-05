@@ -33,6 +33,9 @@ export class OnSpecificTicket {
   assignedAgentId = '';
   priority: Priority = 'LOW';
   isInternal = false
+
+
+  
   statuses = [
     'OPEN', 'ASSIGNED', 'INPROGRESS', 'RESOLVED',
     'CLOSED', 'FAILED', 'ESCALATED', 'BREACHED', 'REOPEN'
@@ -152,8 +155,15 @@ export class OnSpecificTicket {
   }
 
 assignTicket(ticketId: string) {
-  this.router.navigate(['/manager/assign', ticketId]);
+  this.router.navigate(['/manager/assign', ticketId],    { queryParams: { mode: 'assign' }});
 }
 
+//reassign ticket
+reassignTicket(ticketId: string) {
+  this.router.navigate(
+    ['/manager/assign', ticketId],
+    { queryParams: { mode: 'reassign' } }
+  );
+}
 
 }

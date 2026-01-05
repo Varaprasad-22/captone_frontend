@@ -1,4 +1,4 @@
-<h2>Assign Ticket</h2>
+<h2>{{ mode === 'assign' ? 'Assign Ticket' : 'Reassign Ticket' }}</h2>
 <p><b>Ticket ID:</b> {{ ticketId }}</p>
 
 <label>
@@ -38,10 +38,10 @@
       </td>
 
       <td>
-        <button
+            <button
           [disabled]="!agent.active"
-          (click)="assign(agent.userId)">
-          Assign
+          (click)="submit(agent.userId)">
+          {{ mode === 'assign' ? 'Assign' : 'Reassign' }}
         </button>
       </td>
     </tr>

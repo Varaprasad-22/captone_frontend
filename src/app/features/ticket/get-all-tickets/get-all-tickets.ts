@@ -6,15 +6,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-get-all-open-tickets',
+  selector: 'app-get-all-tickets',
   imports: [CommonModule,FormsModule],
-  standalone: true,
-  templateUrl: './get-all-open-tickets.html',
-  styleUrl: './get-all-open-tickets.css',
+  templateUrl: './get-all-tickets.html',
+  styleUrl: './get-all-tickets.css',
 })
-export class GetAllOpenTickets {
-
-  tickets: TicketResponse[] = [];
+export class GetAllTickets {
+tickets: TicketResponse[] = [];
   loading = true;
   errorMessage = '';
 
@@ -39,9 +37,9 @@ export class GetAllOpenTickets {
   loadOpenTickets(){
     this.loading = true;
 
-    this.ticketService.getAllOpenTickets().subscribe({
+    this.ticketService.getAllTickets().subscribe({
       next: (res: TicketResponse[]) => {
-                console.log('OPEN TICKETS RESPONSE:', res);
+                console.log('All TICKETS RESPONSE:', res);
         this.tickets = res;
         this.loading = false;
         this.cdr.detectChanges(); 

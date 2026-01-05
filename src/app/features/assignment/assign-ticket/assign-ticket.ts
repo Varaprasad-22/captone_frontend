@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component,ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TicketResponse } from '../../../models/ticket-response.model';
@@ -16,7 +16,7 @@ import { AuthService } from '../../../core/services/auth.services';
   templateUrl: './assign-ticket.html',
   styleUrl: './assign-ticket.css'
 })
-export class AssignTicket{
+export class AssignTicket {
 
   ticketId!: string;
 
@@ -30,15 +30,25 @@ export class AssignTicket{
   loading = true;
   priority: Priority = 'LOW';
 
+
+  //reassign
+  mode: 'assign' | 'reassign' = 'assign';
+
+
   constructor(
     private route: ActivatedRoute,
     private agentService: AssignmentService,
     private assignmentService: AssignmentService,
-    private authService:AuthService,
+    private authService: AuthService,
     private router: Router,
-    private cdr:ChangeDetectorRef
+    private cdr: ChangeDetectorRef
   ) {
     this.ticketId = this.route.snapshot.paramMap.get('ticketId')!;
+this.mode =
+  this.route.snapshot.queryParamMap.get('mode') === 'reassign'
+    ? 'reassign'
+    : 'assign';
+
     this.loadAgents();
   }
 
@@ -55,22 +65,23 @@ export class AssignTicket{
         this.agents.forEach(agent => {
           this.loadWorkload(agent.userId);
         });
-                this.cdr.detectChanges();
+        this.cdr.detectChanges();
       },
       error: () => this.loading = false
     });
   }
 
-  loadWorkload(agentId: string){
+  loadWorkload(agentId: string) {
     this.agentService.getAgentWorkload(agentId).subscribe({
-      next: (response) => {this.workloads[agentId] = response,
+      next: (response) => {
+        this.workloads[agentId] = response,
         this.cdr.detectChanges();
       },
       error: () => this.workloads[agentId] = []
     });
   }
 
-  assign(agentId: string){
+  assign(agentId: string) {
     this.assignmentService.assignTicket({
       ticketId: this.ticketId,
       agentId,
@@ -79,10 +90,38 @@ export class AssignTicket{
       next: () => {
         alert('Ticket assigned successfully');
         this.router.navigate(['/allopentickets']);
-       this.cdr.detectChanges();
+        this.cdr.detectChanges();
       },
       error: () => alert('Assignment failed')
     });
   }
- 
+
+  //reassign
+    submit(agentId: string) {
+    if (this.mode === 'assign') {
+      this.assignmentService.assignTicket({
+        ticketId: this.ticketId,
+        agentId,
+        priority: this.priority
+      }).subscribe({
+        next: () => {
+          alert('Ticket assigned successfully');
+          this.router.navigate(['/allopentickets']);
+        },
+        error: () => alert('Assignment failed')
+      });
+    } else {
+      this.assignmentService.reassignTicket({
+        ticketId: this.ticketId,
+        newAgentId: agentId
+      }).subscribe({
+        next: () => {
+          alert('Ticket reassigned successfully');
+          this.router.navigate(['/allopentickets']);
+        },
+        error: () => alert('Reassignment failed')
+      });
+    }
+  }
+
 }

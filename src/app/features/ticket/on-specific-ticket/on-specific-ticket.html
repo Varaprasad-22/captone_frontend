@@ -18,7 +18,18 @@
     <p><b>Created At:</b> {{ ticket.createdAt | date:'short' }}</p>
   </div  >
   <div *ngIf="isManagerOrAdmin">
-  <button (click)="assignTicket(ticket.ticketId)">Assign</button>
+      <button
+    *ngIf="!ticket.assignedAgentId"
+    (click)="assignTicket(ticket.ticketId)">
+    Assign
+  </button>
+
+  <button
+    *ngIf="ticket.assignedAgentId"
+    (click)="reassignTicket(ticket.ticketId)">
+    Reassign
+  </button>
+  
   </div>
 
   <div *ngIf="isAgent">

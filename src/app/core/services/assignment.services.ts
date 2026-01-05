@@ -27,4 +27,13 @@ export class AssignmentService {
       { responseType: 'text' }
     );
   }
+
+  //for re assigning 
+    reassignTicket(payload: {
+    ticketId: string;
+    newAgentId: string;
+  }) {
+    return this.http.post(`${this.baseUrl}/reassign`, payload,    { responseType: 'text' });
+  }
+
 }
