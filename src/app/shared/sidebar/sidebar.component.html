@@ -67,6 +67,31 @@
       </a>
     </ng-container>
     
+    <ng-container *ngIf="userRole === 'ROLE_MANAGER'">
+      <p class="section-header">TEAM OVERSIGHT</p>
+      
+      <a routerLink="/getAllTickets" routerLinkActive="active-link" class="nav-item">
+        <span class="icon"><i class="fas fa-layer-group"></i></span>
+        <span class="title">All Tickets</span>
+        <span class="curve-top"></span>
+        <span class="curve-bottom"></span>
+      </a>
+
+      <a routerLink="/allopentickets" routerLinkActive="active-link" class="nav-item">
+        <span class="icon"><i class="fas fa-folder-open"></i></span>
+        <span class="title">Open Tickets</span>
+        <span class="curve-top"></span>
+        <span class="curve-bottom"></span>
+      </a>
+
+      <a routerLink="/manager/assign" routerLinkActive="active-link" class="nav-item">
+        <span class="icon"><i class="fas fa-user-tag"></i></span>
+        <span class="title">Assign Agent</span>
+        <span class="curve-top"></span>
+        <span class="curve-bottom"></span>
+      </a>
+    </ng-container>
+
     <ng-container *ngIf="userRole === 'ROLE_ADMIN'">
       <p class="section-header">ADMINISTRATION</p>
       <a routerLink="/admin/register" routerLinkActive="active-link" class="nav-item">
