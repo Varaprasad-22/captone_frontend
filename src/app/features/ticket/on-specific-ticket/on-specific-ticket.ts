@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Component, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TicketService } from '../../../core/services/ticket.services';
+import { AuthService } from '../../../core/services/auth.services'; // Import Auth
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { TicketResponse } from '../../../models/ticket-response.model';
@@ -22,40 +23,40 @@ export class OnSpecificTicket {
   comments: any[] = [];
   loading = true;
 
-  //see it is for agents 
+  // roles 
   role = localStorage.getItem('role');
+  currentUserEmail = ''; // for left and right parts so if ur msg on 1 side
   isAgent = false;
   isManagerOrAdmin = false;
-  newStatus = '';
-  commentText = '';
-
-  //for assigning
-  assignedAgentId = '';
-  priority: Priority = 'LOW';
-  isInternal = false
-
 
   
+  commentText = '';
+  isInternal = false;
+
+  showStatusModal = false;
+  selectedStatus = '';
   statuses = [
-    'OPEN', 'ASSIGNED', 'INPROGRESS', 'RESOLVED',
+    'OPEN', 'ASSIGNED', 'IN_PROGRESS', 'RESOLVED',
     'CLOSED', 'FAILED', 'ESCALATED', 'BREACHED', 'REOPEN'
   ];
+
   constructor(
     private route: ActivatedRoute,
     private ticketService: TicketService,
+    private authService: AuthService,
     private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer,
-    private router:Router
+    private router: Router
   ) {
     this.ticketId = this.route.snapshot.paramMap.get('id')!;
-    //adding the roles for specific purposes
-    this.isAgent =
-      this.role === 'ROLE_AGENT' ||
-      this.role === 'ROLE_ADMIN' ||
-      this.role === 'ROLE_MANAGER';
-    this.isManagerOrAdmin =
-      this.role === 'ROLE_MANAGER' ||
-      this.role === 'ROLE_ADMIN';
+    
+    // from the storage
+    const user = this.authService.getUser();
+    this.currentUserEmail = user?.email || ''; // Or username
+
+    this.isAgent = this.role === 'ROLE_AGENT' || this.role === 'ROLE_ADMIN' || this.role === 'ROLE_MANAGER';
+    this.isManagerOrAdmin = this.role === 'ROLE_MANAGER' || this.role === 'ROLE_ADMIN';
+    
     this.loadAll();
   }
 
@@ -64,7 +65,7 @@ export class OnSpecificTicket {
       next: (res: TicketResponse) => {
         this.ticket = res;
         this.loading = false;
-        this.newStatus = res.status;
+        this.selectedStatus = res.status; // Init modal dropdown
         this.cdr.detectChanges();
       },
       error: () => {
@@ -73,7 +74,6 @@ export class OnSpecificTicket {
       }
     });
 
-
     this.ticketService.getAttachments(this.ticketId).subscribe({
       next: (res) => {
         this.attachments = res;
@@ -81,17 +81,7 @@ export class OnSpecificTicket {
       }
     });
 
-    this.ticketService.getComments(this.ticketId).subscribe({
-      next: (res) => {
-        this.comments = res;
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        this.comments = [];
-        this.cdr.detectChanges();
-      }
-    });
-
+    this.refreshComments();
   }
 
   refreshComments() {
@@ -102,51 +92,29 @@ export class OnSpecificTicket {
       },
       error: () => {
         this.comments = [];
-        this.cdr.detectChanges();
       }
     });
   }
 
-  // on-specific-ticket.ts
   downloadFile(file: any) {
     this.ticketService.downloadAttachment(file.id).subscribe({
       next: (blob) => {
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = file.fileName; // Uses the filename from your backend response
+        link.download = file.fileName;
         link.click();
         window.URL.revokeObjectURL(url);
       },
-      error: (err) => {
-        console.error('Download failed', err);
-        alert('Could not download file. Please check your permissions.');
-      }
+      error: () => alert('Download failed')
     });
   }
 
-
-
-  //for updateing the status
-  updateStatus() {
-    if (!this.isAgent) return;
-
-    this.ticketService
-      .updateTicketStatus(this.ticketId, this.newStatus)
-      .subscribe(() => {
-        this.ticket.status = this.newStatus;
-        alert('Status updated');
-      });
-  }
-
-
-
-  //wirting of comments
+  // comments to wirte
   addComment() {
     if (!this.commentText.trim()) return;
 
-    this.ticketService
-      .addComment(this.ticketId, this.commentText, this.isInternal)
+    this.ticketService.addComment(this.ticketId, this.commentText, this.isInternal)
       .subscribe(() => {
         this.commentText = '';
         this.isInternal = false;
@@ -154,16 +122,32 @@ export class OnSpecificTicket {
       });
   }
 
-assignTicket(ticketId: string) {
-  this.router.navigate(['/manager/assign', ticketId],    { queryParams: { mode: 'assign' }});
-}
+  //for changing this pop up needed
+  openStatusModal() {
+    this.selectedStatus = this.ticket.status; // Reset to current
+    this.showStatusModal = true;
+  }
 
-//reassign ticket
-reassignTicket(ticketId: string) {
-  this.router.navigate(
-    ['/manager/assign', ticketId],
-    { queryParams: { mode: 'reassign' } }
-  );
-}
+  closeStatusModal() {
+    this.showStatusModal = false;
+  }
 
+  confirmStatusChange() {
+    this.ticketService.updateTicketStatus(this.ticketId, this.selectedStatus)
+      .subscribe(() => {
+        this.ticket.status = this.selectedStatus;
+        this.showStatusModal = false;
+        this.cdr.detectChanges();
+     
+      });
+  }
+
+  // these are for the manager part where he can assign /reaasign according to requirement and also by admin
+  assignTicket(ticketId: string) {
+    this.router.navigate(['/manager/assign', ticketId], { queryParams: { mode: 'assign' } });
+  }
+
+  reassignTicket(ticketId: string) {
+    this.router.navigate(['/manager/assign', ticketId], { queryParams: { mode: 'reassign' } });
+  }
 }

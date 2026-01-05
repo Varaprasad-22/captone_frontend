@@ -1,105 +1,133 @@
-<p>on-specific-ticket works!</p>
+<div *ngIf="loading" class="loading-txt">Loading...</div>
 
-<div *ngIf="loading">
-  <p>Loading ticket details...</p>
-</div>
+<div class="ticket-layout" *ngIf="!loading && ticket">
 
-<div *ngIf="!loading && ticket">
-
-  <div class="ticket-section">
-    <h2>Ticket Details</h2>
-
-    <p><b>Ticket ID:</b> {{ ticket.ticketId }}</p>
-    <p><b>Title:</b> {{ ticket.title }}</p>
-    <p><b>Description:</b> {{ ticket.description }}</p>
-    <p><b>Status:</b> {{ ticket.status }}</p>
-    <div *ngIf="isAgent">
-    <p><b>Priority:</b> {{ ticket.priority }}</p></div>
-    <p><b>Created At:</b> {{ ticket.createdAt | date:'short' }}</p>
-  </div  >
-  <div *ngIf="isManagerOrAdmin">
-      <button
-    *ngIf="!ticket.assignedAgentId"
-    (click)="assignTicket(ticket.ticketId)">
-    Assign
-  </button>
-
-  <button
-    *ngIf="ticket.assignedAgentId"
-    (click)="reassignTicket(ticket.ticketId)">
-    Reassign
-  </button>
-  
-  </div>
-
-  <div *ngIf="isAgent">
-    <hr />
-    <h3>Update Status</h3>
-
-    <select [(ngModel)]="newStatus">
-      <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
-    </select>
-
-    <button (click)="updateStatus()">Update Status</button>
-  </div>
-  <hr />
-
-   <div class="ticket-section">
-  <h3>Uploaded Files</h3>
-
-  <p *ngIf="attachments.length === 0">No files uploaded</p>
-
-  <div *ngFor="let file of attachments" style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
-    <span>{{ file.fileName }}</span>
-    <button (click)="downloadFile(file)" style="cursor: pointer;">
-      Download
-    </button>
-  </div>
-</div>
-
-  <hr />
-
-  <div class="ticket-section">
-    <h3>Comments</h3>
-
-    <button (click)="refreshComments()">
-      Refresh Comments
-    </button>
-
-    <p *ngIf="comments.length === 0">
-      No comments yet
-    </p>
-
-    <div *ngFor="let comment of comments" class="comment-box">
-      <div *ngIf="!comment.internal || isAgent">
-      <p><b>{{ comment.user }}</b></p>
-      <p>{{ comment.text }}</p>
-      <small>{{ comment.createdAt | date:'short' }}</small>
-      <hr />
+  <div class="main-column">
+    
+    <div class="ticket-header">
+      <div class="header-top">
+        <span class="ticket-id">#{{ ticket.ticketId }}</span>
+        <span class="status-badge" [ngClass]="'status-' + ticket.status">
+          {{ ticket.status.replace('_', ' ') }}
+        </span>
       </div>
+      <h2 class="ticket-title">{{ ticket.title }}</h2>
+      <div class="description-box">{{ ticket.description }}</div>
+    </div>
+
+    <div class="chat-container">
+      
+      <div class="chat-messages" #scrollContainer>
+        <div *ngIf="comments.length === 0" style="text-align:center; color:#999; margin-top:20px;">
+          No messages yet.
+        </div>
+
+        <ng-container *ngFor="let c of comments">
+          <div class="message-wrapper" 
+               *ngIf="!c.internal || isAgent"
+               [ngClass]="(c.user === currentUserEmail || c.user === 'You') ? 'right' : 'left'">
+            
+            <div class="message-meta">
+              {{ c.user }} • {{ c.createdAt | date:'shortTime' }}
+            </div>
+
+            <div class="message-wrapper-inner" [ngClass]="{'internal-note': c.internal}">
+              <div class="message-bubble">
+                {{ c.text }}
+              </div>
+            </div>
+
+          </div>
+        </ng-container>
+
+      </div>
+
+      <div class="chat-input-area">
+        
+        <div *ngIf="ticket.status === 'CLOSED'" class="closed-alert">
+          Ticket is closed.
+        </div>
+
+        <div *ngIf="ticket.status !== 'CLOSED'">
+          <textarea [(ngModel)]="commentText" placeholder="Write a message..." rows="3"></textarea>
+          
+          <div class="input-actions">
+            <div *ngIf="isAgent">
+              <label style="font-size:13px; color:#666;">
+                <input type="checkbox" [(ngModel)]="isInternal"> Internal Note
+              </label>
+            </div>
+            <div *ngIf="!isAgent"></div> 
+            <button class="btn-send" (click)="addComment()">
+             <i class="fas fa-paper-plane"></i> Send
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
+  <aside class="sidebar-column">
+
+    <div class="sidebar-card" *ngIf="isAgent || isManagerOrAdmin">
+      <div class="sidebar-title">Actions</div>
+      
+      <button *ngIf="isAgent" class="btn-action" (click)="openStatusModal()">
+        Change Status
+      </button>
+
+      <ng-container *ngIf="isManagerOrAdmin">
+        <button *ngIf="!ticket.assignedAgentId" class="btn-action" (click)="assignTicket(ticket.ticketId)">
+          Assign Agent
+        </button>
+        <button *ngIf="ticket.assignedAgentId" class="btn-action" (click)="reassignTicket(ticket.ticketId)">
+          Reassign Agent
+        </button>
+      </ng-container>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-title">Details</div>
+      <div class="info-row">
+        <span>Category</span> <span>{{ ticket.category }}</span>
+      </div>
+      <div class="info-row">
+        <span>Priority</span> <span>{{ ticket.priority }}</span>
+      </div>
+      <div class="info-row">
+        <span>Created</span> <span>{{ ticket.createdAt | date:'shortDate' }}</span>
+      </div>
+      <div class="info-row">
+        <span>Agent</span> <span>{{ ticket.assignedAgentId || 'Unassigned' }}</span>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-title">Attachments</div>
+      <div *ngIf="attachments.length === 0" style="color:#999; font-size:13px;">None</div>
+      <div *ngFor="let file of attachments" style="font-size:13px; margin-bottom:5px;">
+        <a href="javascript:void(0)" (click)="downloadFile(file)" style="color:#007bff; text-decoration:none;">
+          {{ file.fileName }}
+        </a>
+      </div>
+    </div>
+
+  </aside>
 </div>
 
-<div *ngIf="isAgent || role === 'ROLE_USER'">
+<div class="modal-overlay" *ngIf="showStatusModal">
+  <div class="modal-content">
+    <h3 style="margin-top:0;">Update Status</h3>
+    <p style="font-size:14px; color:#666;">Select new status:</p>
+    
+    <select [(ngModel)]="selectedStatus" class="modal-select">
+      <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+    </select>
 
-  <textarea
-    [(ngModel)]="commentText"
-    placeholder="Write comment">
-  </textarea>
-
-  <div *ngIf="isAgent">
-    <label>
-      <input type="checkbox" [(ngModel)]="isInternal" />
-      Internal comment (agents only)
-    </label>
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="closeStatusModal()">Cancel</button>
+      <button class="btn-confirm" (click)="confirmStatusChange()">Save</button>
+    </div>
   </div>
-
-  <button (click)="addComment()">Add Comment</button>
-</div>
-
-
-<div *ngIf="!loading && !ticket">
-  <p>Failed to load ticket details.</p>
 </div>
