@@ -17,7 +17,14 @@ export class AssignmentService {
 
     getAgentWorkload(agentId: string): Observable<AgentWorkLoadResponse[]> {
         return this.http.get<AgentWorkLoadResponse[]>(
-            `/agents/${agentId}/workload`
+            `${this.baseUrl}/agents/${agentId}/workload`
         );
     }
+    assignTicket(data: AssignTicketRequest) {
+    return this.http.post(
+      '/assign',
+      data,
+      { responseType: 'text' }
+    );
+  }
 }

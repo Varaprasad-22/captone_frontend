@@ -1,0 +1,49 @@
+<h2>Assign Ticket</h2>
+<p><b>Ticket ID:</b> {{ ticketId }}</p>
+
+<label>
+  Priority:
+  <select [(ngModel)]="priority">
+    <option value="LOW">LOW</option>
+    <option value="MEDIUM">MEDIUM</option>
+    <option value="HIGH">HIGH</option>
+  </select>
+</label>
+
+<hr />
+
+<p *ngIf="loading">Loading agents...</p>
+
+<table *ngIf="!loading">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Active</th>
+      <th>Workload</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let agent of agents">
+      <td>{{ agent.name }}</td>
+      <td>{{ agent.email }}</td>
+      <td>{{ agent.isActive ? 'Yes' : 'No' }}</td>
+
+      <td>
+        <div *ngFor="let w of workloads[agent.userId]">
+          {{ w.status }} : {{ w.count }}
+        </div>
+      </td>
+
+      <td>
+        <button
+          [disabled]="!agent.isActive"
+          (click)="assign(agent.userId)">
+          Assign
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

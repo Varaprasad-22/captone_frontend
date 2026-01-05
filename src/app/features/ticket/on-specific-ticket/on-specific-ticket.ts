@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { TicketService } from '../../../core/services/ticket.services';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -41,7 +41,8 @@ export class OnSpecificTicket {
     private route: ActivatedRoute,
     private ticketService: TicketService,
     private cdr: ChangeDetectorRef,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private router:Router
   ) {
     this.ticketId = this.route.snapshot.paramMap.get('id')!;
     //adding the roles for specific purposes
@@ -150,23 +151,9 @@ export class OnSpecificTicket {
       });
   }
 
-  assignTicket(): void {
-    if (!this.assignedAgentId.trim()) return;
+assignTicket(ticketId: string) {
+  this.router.navigate(['/manager/assign', ticketId]);
+}
 
-    this.ticketService.assignTicket({
-      ticketId: this.ticketId,
-      agentId: this.assignedAgentId,
-      priority: this.priority
-    }).subscribe({
-      next: () => {
-        alert('Ticket assigned successfully');
-        this.assignedAgentId = '';
-        this.loadAll();
-      },
-      error: () => {
-        alert('Assignment failed');
-      }
-    });
-  }
 
 }

@@ -6,6 +6,7 @@ import { CreateTicketComponent } from './features/ticket/create-ticket/create-ti
 import { GetMyTicket } from './features/ticket/get-my-ticket/get-my-ticket';
 import { OnSpecificTicket } from './features/ticket/on-specific-ticket/on-specific-ticket';
 import { GetAllOpenTickets } from './features/ticket/get-all-open-tickets/get-all-open-tickets';
+import { AssignTicket } from './features/assignment/assign-ticket/assign-ticket';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
@@ -15,4 +16,5 @@ export const routes: Routes = [
   { path: 'tickets/userTicket', component: GetMyTicket, canActivate: [authGuard] },
   { path: 'viewTicket/:id', component: OnSpecificTicket, canActivate: [authGuard] },
   { path: 'allopentickets', component: GetAllOpenTickets, canActivate: [authGuard] },
+  { path: 'manager/assign/:ticketId', component: AssignTicket,canActivate:[authGuard] }
 ];
