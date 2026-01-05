@@ -55,6 +55,7 @@ export class AssignTicket{
         this.agents.forEach(agent => {
           this.loadWorkload(agent.userId);
         });
+                this.cdr.detectChanges();
       },
       error: () => this.loading = false
     });
@@ -62,7 +63,9 @@ export class AssignTicket{
 
   loadWorkload(agentId: string){
     this.agentService.getAgentWorkload(agentId).subscribe({
-      next: (res) => this.workloads[agentId] = res,
+      next: (response) => {this.workloads[agentId] = response,
+        this.cdr.detectChanges();
+      },
       error: () => this.workloads[agentId] = []
     });
   }
@@ -75,7 +78,8 @@ export class AssignTicket{
     }).subscribe({
       next: () => {
         alert('Ticket assigned successfully');
-        this.router.navigate(['/manager/open-tickets']);
+        this.router.navigate(['/allopentickets']);
+       this.cdr.detectChanges();
       },
       error: () => alert('Assignment failed')
     });

@@ -29,7 +29,7 @@
     <tr *ngFor="let agent of agents">
       <td>{{ agent.name }}</td>
       <td>{{ agent.email }}</td>
-      <td>{{ agent.isActive ? 'Yes' : 'No' }}</td>
+      <td>{{ agent.active ? 'Yes' : 'No' }}</td>
 
       <td>
         <div *ngFor="let w of workloads[agent.userId]">
@@ -39,7 +39,7 @@
 
       <td>
         <button
-          [disabled]="!agent.isActive"
+          [disabled]="!agent.active"
           (click)="assign(agent.userId)">
           Assign
         </button>

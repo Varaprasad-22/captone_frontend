@@ -3,5 +3,5 @@ export interface AllUsersResponse {
   name: string;
   email: string;
   role: string;
-  isActive: boolean;
+  active: boolean;
 }

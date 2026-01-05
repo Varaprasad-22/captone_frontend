@@ -63,7 +63,7 @@ export class AuthService {
         direction = 'ASC'
     ): Observable<PageResponse<AllUsersResponse>> {
         return this.http.get<PageResponse<AllUsersResponse>>(
-            `/getAgents?page=${page}&size=${size}&sortBy=${sortBy}&direction=${direction}`
+            `${this.baseUrl}/getAgents?page=${page}&size=${size}&sortBy=${sortBy}&direction=${direction}`
         );
     }
 

@@ -22,7 +22,7 @@ export class AssignmentService {
     }
     assignTicket(data: AssignTicketRequest) {
     return this.http.post(
-      '/assign',
+      `${this.baseUrl}/assign`,
       data,
       { responseType: 'text' }
     );
