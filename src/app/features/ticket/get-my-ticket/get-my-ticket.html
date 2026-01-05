@@ -1,10 +1,11 @@
 <div class="page-header">
   <div class="page-title">
     <h1>My Tickets</h1>
-    <p>Track and manage your support requests</p>
+    <p *ngIf="!isAgent">Track and manage your support requests</p>
+    <p *ngIf="isAgent">You have done a great Job! </p>
   </div>
   
-  <button class="btn-create" (click)="goToCreate()">
+  <button *ngIf="!isAgent" class="btn-create" (click)="goToCreate()">
     <i class="fas fa-plus"></i> Create Ticket
   </button>
 </div>
@@ -73,8 +74,8 @@
     <i class="far fa-folder-open"></i>
   </div>
   <h3>No Tickets Found</h3>
-  <p>You haven't submitted any support tickets yet.</p>
-  <button class="btn-create" style="margin: 20px auto;" (click)="goToCreate()">
+  <p *ngIf="!isAgent">You haven't submitted any support tickets yet.</p>
+  <button *ngIf="!isAgent" class="btn-create" style="margin: 20px auto;" (click)="goToCreate()">
     Submit your first ticket
   </button>
 </div>

@@ -38,6 +38,13 @@ export class TicketService {
     );
   }
 
+    getAgentResolvedTickets(){
+    const user = this.authService.getUser();
+    const agentId = user.id ?? '';
+
+    return this.http.get<any[]>(`${this.baseUrl}/${agentId}/getAgentResolvedTickets`);
+  }
+
   getTicketById(ticketId: string) {
     return this.http.get<TicketResponse>(`${this.baseUrl}/${ticketId}/getTicket`);
   }

@@ -28,6 +28,8 @@ export const routes: Routes = [
     { path: 'admin/dashboard', component: AdminDashboard },
   { path: 'tickets/create', component: CreateTicketComponent, canActivate: [authGuard] },
   { path: 'tickets/userTicket', component: GetMyTicket, canActivate: [authGuard] },
+
+    { path: 'tickets/resolvedTickets', component: GetMyTicket, canActivate: [authGuard] },
   { path: 'viewTicket/:id', component: OnSpecificTicket, canActivate: [authGuard] },
   { path: 'allopentickets', component: GetAllOpenTickets, canActivate: [authGuard] },
   { path: 'manager/assign/:ticketId', component: AssignTicket, canActivate: [authGuard] },

@@ -1,27 +1,57 @@
-<h2>Agent Dashboard</h2>
-
-<div *ngIf="loading">Loading...</div>
-
-<div class="dashboard" *ngIf="!loading">
-
-  <div class="card total">
-    <span>Total Tickets</span>
-    <strong>{{ dashboard.totalTickets }}</strong>
-  </div>
-
-  <div class="card active">
-    <span>Active</span>
-    <strong>{{ dashboard.active }}</strong>
-  </div>
-
-  <div class="card breached">
-    <span>Breached</span>
-    <strong>{{ dashboard.breached }}</strong>
-  </div>
-
-  <div class="card escalations">
-    <span>Escalations</span>
-    <strong>{{ dashboard.escalations }}</strong>
-  </div>
-
+<div *ngIf="loading" class="loading-container">
+  <div class="spinner"></div>
+  <p>Loading Workspace...</p>
 </div>
+
+<div class="dashboard-wrapper" *ngIf="!loading">
+  
+  <header class="dashboard-header">
+    <h1>Agent Workspace</h1>
+    <p>Overview of your assigned tickets and performance.</p>
+  </header>
+
+  <div class="stats-grid">
+
+    <div class="stat-card theme-total">
+      <div class="stat-info">
+        <h4>Assigned To Me</h4>
+        <h2>{{ dashboard.totalTickets }}</h2>
+      </div>
+      <div class="icon-box">
+        <i class="fas fa-clipboard-list"></i>
+      </div>
+    </div>
+
+    <div class="stat-card theme-active">
+      <div class="stat-info">
+        <h4>Active Workload</h4>
+        <h2>{{ dashboard.active }}</h2>
+      </div>
+      <div class="icon-box">
+        <i class="fas fa-heartbeat"></i>
+      </div>
+    </div>
+
+    <div class="stat-card theme-escalated">
+      <div class="stat-info">
+        <h4>Escalations</h4>
+        <h2>{{ dashboard.escalations }}</h2>
+      </div>
+      <div class="icon-box">
+        <i class="fas fa-level-up-alt"></i>
+      </div>
+    </div>
+
+    <div class="stat-card theme-breached">
+      <div class="stat-info">
+        <h4>SLA Breached</h4>
+        <h2>{{ dashboard.breached }}</h2>
+      </div>
+      <div class="icon-box">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+    </div>
+
+  </div>
+
+  </div>

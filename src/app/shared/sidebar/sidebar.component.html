@@ -48,6 +48,25 @@
       </a>
     </ng-container>
 
+    <ng-container *ngIf="userRole === 'ROLE_AGENT'">
+      <p class="section-header">WORKSPACE</p>
+      
+      <a routerLink="/tickets/userTicket" routerLinkActive="active-link" class="nav-item">
+        <span class="icon"><i class="fas fa-headset"></i></span>
+        <span class="title">My Assignments</span>
+        <span class="curve-top"></span>
+        <span class="curve-bottom"></span>
+      </a>
+
+
+      <a routerLink="/tickets/resolvedTickets" routerLinkActive="active-link" class="nav-item">
+        <span class="icon"><i class="fas fa-check-double"></i></span>
+        <span class="title">Resolved History</span>
+        <span class="curve-top"></span>
+        <span class="curve-bottom"></span>
+      </a>
+    </ng-container>
+    
     <ng-container *ngIf="userRole === 'ROLE_ADMIN'">
       <p class="section-header">ADMINISTRATION</p>
       <a routerLink="/admin/register" routerLinkActive="active-link" class="nav-item">
