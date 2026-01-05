@@ -1,49 +1,99 @@
-<h2>{{ mode === 'assign' ? 'Assign Ticket' : 'Reassign Ticket' }}</h2>
-<p><b>Ticket ID:</b> {{ ticketId }}</p>
+<div *ngIf="loading" class="loading-box">
+  <div class="spinner"></div>
+  <p>Loading available agents...</p>
+</div>
 
-<label>
-  Priority:
-  <select [(ngModel)]="priority">
-    <option value="LOW">LOW</option>
-    <option value="MEDIUM">MEDIUM</option>
-    <option value="HIGH">HIGH</option>
-  </select>
-</label>
+<div class="assign-container" *ngIf="!loading">
 
-<hr />
+  <div class="header-card">
+    <div class="header-info">
+      <h1>{{ mode === 'assign' ? 'Assign Agent' : 'Reassign Ticket' }}</h1>
+      <p class="ticket-ref">Ticket ID: <span>#{{ ticketId }}</span></p>
+    </div>
 
-<p *ngIf="loading">Loading agents...</p>
+    <div class="priority-section">
+      <span class="priority-label">Set Priority:</span>
+      <select [(ngModel)]="priority" class="modern-select">
+        <option value="LOW">Low Priority</option>
+        <option value="MEDIUM">Medium Priority</option>
+        <option value="HIGH">High Priority</option>
+      </select>
+    </div>
+  </div>
 
-<table *ngIf="!loading">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Active</th>
-      <th>Workload</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr *ngFor="let agent of agents">
-      <td>{{ agent.name }}</td>
-      <td>{{ agent.email }}</td>
-      <td>{{ agent.active ? 'Yes' : 'No' }}</td>
-
-      <td>
-        <div *ngFor="let w of workloads[agent.userId]">
-          {{ w.status }} : {{ w.count }}
+  <div class="agents-grid">
+    
+    <div *ngFor="let agent of agents" class="agent-card" [class.inactive]="!agent.active">
+      
+      <div class="card-top">
+        <div class="avatar">
+          {{ agent.name.charAt(0).toUpperCase() }}
+          <span class="status-dot" [ngClass]="agent.active ? 'online' : 'offline'"></span>
         </div>
-      </td>
+        <div class="agent-details">
+          <h3>{{ agent.name }}</h3>
+          <p>{{ agent.email }}</p>
+        </div>
+      </div>
 
-      <td>
-            <button
-          [disabled]="!agent.active"
-          (click)="submit(agent.userId)">
-          {{ mode === 'assign' ? 'Assign' : 'Reassign' }}
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+      <div class="workload-section">
+        <span class="workload-label">Current Workload</span>
+        
+        <div class="workload-chips" *ngIf="workloads[agent.userId]?.length; else noWorkload">
+          <div *ngFor="let w of workloads[agent.userId]" 
+               class="chip"
+               [ngClass]="'chip-' + w.status">
+            <span>{{ w.status.replace('_', ' ') }}</span>
+            <strong>{{ w.count }}</strong>
+          </div>
+        </div>
+
+        <ng-template #noWorkload>
+          <div class="no-workload">No active tickets assigned</div>
+        </ng-template>
+      </div>
+
+      <button 
+        class="btn-assign" 
+        [disabled]="!agent.active"
+        (click)="submit(agent.userId)"
+        [ngClass]="{'mode-reassign': mode === 'reassign'}"
+      >
+        {{ mode === 'assign' ? 'Assign Ticket' : 'Reassign' }}
+      </button>
+
+    </div>
+
+  </div>
+  <div class="modal-overlay" *ngIf="showConfirmModal">
+  <div class="modal-box">
+    <div class="modal-icon">
+      <i class="fas fa-question"></i>
+    </div>
+    
+    <h3>Confirm Assignment</h3>
+    <p>
+      Are you sure you want to 
+      <b>{{ mode === 'reassign' ? 'reassign' : 'assign' }}</b> 
+      this ticket to <b>{{ selectedAgentName }}</b>?
+    </p>
+
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" (click)="closeModal()">Cancel</button>
+      <button class="btn-modal-confirm" (click)="confirmAssignment()">
+        Yes, Confirm
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" *ngIf="toastMessage">
+  <div class="toast" [ngClass]="toastType">
+    <div class="toast-content">
+      <i class="fas toast-icon" [ngClass]="toastType === 'success' ? 'fa-check-circle' : 'fa-times-circle'"></i>
+      <div class="toast-message">{{ toastMessage }}</div>
+    </div>
+    <button class="btn-close-toast" (click)="closeToast()">×</button>
+  </div>
+</div>
+</div>

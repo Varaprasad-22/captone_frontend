@@ -29,8 +29,14 @@ export class AssignTicket {
 
   loading = true;
   priority: Priority = 'LOW';
+showConfirmModal = false;
+  selectedAgentId: string = '';
+  selectedAgentName: string = '';
 
-
+  // TOAST STATES
+  toastMessage: string | null = null;
+  toastType: 'success' | 'error' = 'success';
+private toastTimeout: any;
   //reassign
   mode: 'assign' | 'reassign' = 'assign';
 
@@ -80,6 +86,9 @@ this.mode =
       error: () => this.workloads[agentId] = []
     });
   }
+  closeModal() {
+    this.showConfirmModal = false;
+  }
 
   assign(agentId: string) {
     this.assignmentService.assignTicket({
@@ -97,31 +106,59 @@ this.mode =
   }
 
   //reassign
-    submit(agentId: string) {
-    if (this.mode === 'assign') {
-      this.assignmentService.assignTicket({
-        ticketId: this.ticketId,
-        agentId,
-        priority: this.priority
-      }).subscribe({
-        next: () => {
-          alert('Ticket assigned successfully');
-          this.router.navigate(['/allopentickets']);
-        },
-        error: () => alert('Assignment failed')
-      });
-    } else {
-      this.assignmentService.reassignTicket({
-        ticketId: this.ticketId,
-        newAgentId: agentId
-      }).subscribe({
-        next: () => {
-          alert('Ticket reassigned successfully');
-          this.router.navigate(['/allopentickets']);
-        },
-        error: () => alert('Reassignment failed')
-      });
-    }
+  submit(agentId: string) {
+    const agent = this.agents.find(a => a.userId === agentId);
+    this.selectedAgentId = agentId;
+    this.selectedAgentName = agent ? agent.name : 'this agent';
+    
+    this.showConfirmModal = true;
   }
 
+  confirmAssignment() {
+    this.showConfirmModal = false; 
+
+    let requestObservable;
+
+    if (this.mode === 'assign') {
+      requestObservable = this.assignmentService.assignTicket({ 
+        ticketId: this.ticketId, 
+        agentId: this.selectedAgentId, 
+        priority: this.priority 
+      });
+    } else {
+      requestObservable = this.assignmentService.reassignTicket({ 
+        ticketId: this.ticketId, 
+        newAgentId: this.selectedAgentId 
+      });
+    }
+
+    requestObservable.subscribe({
+      next: () => {
+        this.showToast('success', `Ticket successfully ${this.mode}ed to ${this.selectedAgentName}!`);
+        setTimeout(() => {
+          this.router.navigate(['/manager/all-tickets']);
+        }, 1500);
+      },
+      error: (err) => {
+        const msg = err.error?.message || `${this.mode} failed. Please try again.`;
+        this.showToast('error', msg);
+      }
+    });
+  }
+
+  showToast(type: 'success' | 'error', message: string) {
+    this.toastType = type;
+    this.toastMessage = message;
+    this.cdr.detectChanges();
+
+    if (this.toastTimeout) clearTimeout(this.toastTimeout);
+    this.toastTimeout = setTimeout(() => {
+      this.closeToast();
+    }, 4000);
+  }
+
+  closeToast() {
+    this.toastMessage = null;
+    this.cdr.detectChanges();
+  }
 }
