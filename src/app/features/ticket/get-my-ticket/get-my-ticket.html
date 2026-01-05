@@ -27,6 +27,7 @@
         <th>Subject</th>
         <th>Category</th>
         <th>Status</th>
+        <th *ngIf="isAgent">Priority</th>
         <th>Created</th>
         <th>Action</th>
       </tr>
@@ -51,7 +52,12 @@
             {{ t.status.replace('_', ' ') }}
           </span>
         </td>
-
+        <td *ngIf="isAgent">
+          <div style="display:flex; align-items:center;">
+            <span class="priority-dot" [ngClass]="'p-' + t.priority"></span>
+            <span style="font-size:13px; font-weight:500;">{{ t.priority }}</span>
+          </div>
+        </td>
         <td>
           <span style="color: #718096; font-size: 13px;">
             {{ t.createdAt | date:'mediumDate' }}

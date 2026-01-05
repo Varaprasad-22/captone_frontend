@@ -1,52 +1,93 @@
-<p>get-all-open-tickets works!</p>
-<h2>Open Tickets</h2>
- 
-<p *ngIf="loading">Loading tickets...</p>
+<div class="page-header">
+  <div class="header-content">
+    <h1>All Tickets</h1>
+    <p>Manage and oversee all support requests across the system.</p>
+  </div>
+</div>
 
-<p class="error" *ngIf="errorMessage">
+<div class="controls-bar">
+  <input type="text" class="search-input" placeholder="Search by Ticket ID or Title..." />
+  
+  <select class="filter-select">
+    <option value="ALL">All Statuses</option>
+    <option value="OPEN">Open</option>
+    <option value="IN_PROGRESS">In Progress</option>
+    <option value="ESCALATED">Escalated</option>
+    <option value="BREACHED">Breached</option>
+  </select>
+
+  <select class="filter-select">
+    <option value="ALL">All Priorities</option>
+    <option value="HIGH">High</option>
+    <option value="MEDIUM">Medium</option>
+    <option value="LOW">Low</option>
+  </select>
+</div>
+
+<div *ngIf="loading" class="loading-box">
+  <p>Loading ticket database...</p>
+</div>
+
+<div *ngIf="errorMessage" style="color:red; text-align:center; padding:20px;">
   {{ errorMessage }}
-</p>
+</div>
 
-<table *ngIf="!loading && tickets.length>0">
-  <thead>
-    <tr>
-      <th>Ticket ID</th>
-      <th>Title</th>
-      <th>Category</th>
-      <th>Status</th>
-      <th>Priority</th>
-      <th>Agent</th>
-      
-      <th>Actions</th>
-    </tr>
-  </thead>
+<div class="table-card" *ngIf="!loading && tickets.length > 0">
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Subject</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>Category</th>
+        <th>Assigned Agent</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let t of tickets" (click)="viewTicket(t.ticketId)">
+        
+        <td><span class="col-id">#{{ t.ticketId.substring(0,6) }}</span></td>
+        
+        <td><span class="col-title">{{ t.title }}</span></td>
+        
+        <td>
+          <span class="status-pill" [ngClass]="'status-' + t.status">
+            {{ t.status.replace('_', ' ') }}
+          </span>
+        </td>
 
-  <tbody>
-    <tr *ngFor="let t of tickets">
-      <td>{{ t.ticketId }}</td>
-      <td>{{ t.title }}</td>
-      <td>{{ t.category }}</td>
-      <td>{{ t.status }}</td>
-    <td>{{t.priority}}</td>
-      <td>
-        <span *ngIf="t.assignedAgentId; else noAgent">
-          {{ t.assignedAgentId }}
-        </span>
-        <ng-template #noAgent>
-          <span class="unassigned">No agent assigned</span>
-        </ng-template>
-      </td>
+        <td>
+          <div style="display:flex; align-items:center;">
+            <span class="priority-dot" [ngClass]="'p-' + t.priority"></span>
+            <span style="font-size:13px; font-weight:500;">{{ t.priority }}</span>
+          </div>
+        </td>
 
-      <td>
-        <button (click)="viewTicket(t.ticketId)">View</button>
+        <td><span class="col-category">{{ t.category }}</span></td>
 
-       
-      </td>
-    </tr>
-  </tbody>
-</table>
+        <td>
+          <div class="agent-cell" *ngIf="t.assignedAgentId; else unassignedTpl">
+            <div class="agent-avatar">A</div> <span>{{ t.assignedAgentId }}</span>
+          </div>
+          <ng-template #unassignedTpl>
+            <span class="unassigned">-- Unassigned --</span>
+          </ng-template>
+        </td>
 
+        <td>
+          <button class="btn-icon">
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </td>
 
-<p *ngIf="!loading && tickets.length === 0">
-  No open tickets found
-</p>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="!loading && tickets.length === 0 && !errorMessage" class="empty-state">
+  <i class="fas fa-clipboard-check" style="font-size:40px; margin-bottom:15px; opacity:0.5;"></i>
+  <p>No tickets found.</p>
+</div>
