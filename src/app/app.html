@@ -1,10 +1,9 @@
 
 <div style="display: flex; width: 100%;">
-  
-  <app-sidebar></app-sidebar>
 
-  <div style="flex: 1; height: 100vh; overflow-y: auto; background-color: #f3f6fd;">
+<app-sidebar *ngIf="showSidebar" class="fixed-sidebar"></app-sidebar>
+
+  <main class="content-area" [ngClass]="{'full-width': !showSidebar}" style="flex: 1; height: 100vh; overflow-y: auto; background-color: #f3f6fd;">
     <router-outlet></router-outlet>
-  </div>
-
+  </main>
 </div>

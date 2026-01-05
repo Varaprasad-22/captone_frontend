@@ -2,11 +2,13 @@ import { Component ,ChangeDetectorRef} from '@angular/core';
 import { AuthService } from '../../../core/services/auth.services';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule,CommonModule,RouterModule],
   templateUrl: './register.html',
+  standalone:true,
   styleUrl: './register.css',
 })
 export class Register {

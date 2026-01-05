@@ -1,24 +1,73 @@
-<p>login works!</p>
-<div class="login-container">
-  <h2>Login</h2>
+<div class="login-wrapper">
 
-  <form [formGroup]="loginForm" (ngSubmit)="submit()">
+  <div class="visual-side">
 
-    <input
-      type="text"
-      placeholder="Email"
-      formControlName="email"
-    />
+    <div class="brand-content">
+      <div class="logo-icon">
+        <i class="fas fa-ticket-alt"></i>
+      </div>
+      <h1>TicketMaster</h1>
+      <p>Seamless Issue Tracking & Management</p>
+    </div>
+  </div>
 
-    <input
-      type="password"
-      placeholder="Password"
-      formControlName="password"
-    />
+  <div class="form-side">
+    
+    <div class="login-card">
+      
+      <div class="form-header">
+        <h2>Welcome Back</h2>
+        <p>Please enter your details to sign in.</p>
+      </div>
 
-    <button type="submit">Login</button>
+      <form [formGroup]="loginForm" (ngSubmit)="submit()">
 
-    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+        <div class="input-group">
+          <label class="input-label">Email Address</label>
+          <input 
+            type="text" 
+            class="modern-input" 
+            placeholder="Enter your email" 
+            formControlName="email"
+          >
+          <i class="fas fa-envelope input-icon"></i>
+          
+          <small *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" style="color:#e53e3e; font-size:12px; margin-top:5px; display:block;">
+            Valid email is required
+          </small>
+        </div>
 
-  </form>
+        <div class="input-group">
+          <label class="input-label">Password</label>
+          <input 
+            type="password" 
+            class="modern-input" 
+            placeholder="••••••••" 
+            formControlName="password"
+          >
+          <i class="fas fa-lock input-icon"></i>
+          
+          <small *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" style="color:#e53e3e; font-size:12px; margin-top:5px; display:block;">
+            Password is required
+          </small>
+        </div>
+
+        <button type="submit" class="btn-login" [disabled]="loginForm.invalid ">
+          <span >Sign In</span>
+        </button>
+
+        <div class="error-banner" *ngIf="errorMessage">
+          <i class="fas fa-exclamation-circle"></i>
+          <span>{{ errorMessage }}</span>
+        </div>
+
+        <div class="register-link">
+          Don't have an account? <a routerLink="/register"  routerLinkActive="active-link">Register here</a>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
 </div>
