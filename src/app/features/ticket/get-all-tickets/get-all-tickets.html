@@ -14,7 +14,9 @@
       <th>Title</th>
       <th>Category</th>
       <th>Status</th>
+      <th>Priority</th>
       <th>Agent</th>
+      
       <th>Actions</th>
     </tr>
   </thead>
@@ -25,7 +27,7 @@
       <td>{{ t.title }}</td>
       <td>{{ t.category }}</td>
       <td>{{ t.status }}</td>
-
+    <td>{{t.priority}}</td>
       <td>
         <span *ngIf="t.assignedAgentId; else noAgent">
           {{ t.assignedAgentId }}
