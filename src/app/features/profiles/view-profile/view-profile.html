@@ -8,12 +8,13 @@
 
 <p *ngIf="loading">Loading...</p>
 
-<table *ngIf="!loading && users.length">
+<table *ngIf="!loading && users.length>0">
   <thead>
     <tr>
       <th>Name</th>
       <th>Email</th>
       <th>Status</th>
+      <th>Role</th>
       <th>Action</th>
     </tr>
   </thead>
@@ -23,6 +24,17 @@
       <td>{{ u.name }}</td>
       <td>{{ u.email }}</td>
       <td>{{ u.active ? 'Active' : 'Inactive' }}</td>
+           <td>
+        <select
+          [ngModel]="u.role"
+          (ngModelChange)="changeRole(u, $event)"
+          [disabled]="u.role === 'ROLE_ADMIN'"
+        >
+          <option value="ROLE_USER">USER</option>
+          <option value="ROLE_AGENT">AGENT</option>
+          <option value="ROLE_MANAGER">MANAGER</option>
+        </select>
+      </td>
       <td>
         <button (click)="toggleStatus(u)">
           {{ u.active ? 'Deactivate' : 'Activate' }}

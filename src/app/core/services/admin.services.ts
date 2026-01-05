@@ -14,7 +14,7 @@ export class AdminService {
     constructor(private http: HttpClient) { }
 
     getUsersByRole(role: string): Observable<any[]> {
-        return this.http.get<any[]>(`${this.baseUrl}/users/${role}`);
+        return this.http.get<any>(`${this.baseUrl}/users/${role}`);
     }
 
     toggleUserStatus(userId: string, active: boolean): Observable<void> {
@@ -23,4 +23,10 @@ export class AdminService {
             { active }
         );
     }
+      updateUserRole(userId: string, role: string) {
+    return this.http.put<void>(
+      `${this.baseUrl}/users/${userId}/role`,
+      { role }
+    );
+  }
 }

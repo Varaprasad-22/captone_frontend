@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component,ChangeDetectorRef } from '@angular/core';
 import { AdminService } from '../../../core/services/admin.services';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-view-profile',
-  imports: [],
+  imports: [CommonModule,FormsModule],
   templateUrl: './view-profile.html',
   styleUrl: './view-profile.css',
 })
@@ -12,7 +14,9 @@ export class ViewProfile {
   selectedRole = 'ROLE_USER';
   loading = false;
 
-  constructor(private adminService: AdminService) {
+  constructor(private adminService: AdminService,
+    private cdr:ChangeDetectorRef
+  ) {
 
     this.loadUsers();
   }
@@ -20,9 +24,10 @@ export class ViewProfile {
   loadUsers() {
     this.loading = true;
     this.adminService.getUsersByRole(this.selectedRole).subscribe({
-      next: res => {
-        this.users = res;
+      next: (response:any) => {
+        this.users = response.content;
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: () => this.loading = false
     });
@@ -33,8 +38,20 @@ export class ViewProfile {
     this.adminService
       .toggleUserStatus(user.userId, nextState)
       .subscribe({
-        next: () => user.active = nextState,
-        error: err => alert(err.error?.message || 'Operation failed')
+        next: () => {user.active = nextState,
+        this.cdr.detectChanges()},
+        error: err =>{ alert(err.error?.message || 'Operation failed'),
+        this.cdr.detectChanges()}
       });
   }
+
+  changeRole(user: any, newRole: string) {
+  if (user.role === newRole) return;
+
+  this.adminService.updateUserRole(user.userId, newRole)
+    .subscribe({
+      next: () =>{ user.role = newRole,this.cdr.detectChanges(),  this.loadUsers(); },
+      error: err => alert(err.error?.message || 'Role update failed')
+    });
+}
   }
