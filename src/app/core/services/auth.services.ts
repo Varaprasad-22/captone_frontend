@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environments';
 import { jwtDecode } from 'jwt-decode';
+import { PageResponse } from '../../models/page-response.model';
+import { AllUsersResponse } from '../../models/all-users-response.model';
 
 interface JwtPayload {
     sub: string;
@@ -52,4 +54,18 @@ export class AuthService {
             role: localStorage.getItem('role')
         };
     }
+
+    //import as it gets agent 
+    getAllAgents(
+        page = 0,
+        size = 10,
+        sortBy = 'role.name',
+        direction = 'ASC'
+    ): Observable<PageResponse<AllUsersResponse>> {
+        return this.http.get<PageResponse<AllUsersResponse>>(
+            `/getAgents?page=${page}&size=${size}&sortBy=${sortBy}&direction=${direction}`
+        );
+    }
+
+
 }

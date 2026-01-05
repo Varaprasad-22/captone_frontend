@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environments';
 import { TicketResponse } from '../../models/ticket-response.model';
 import { AssignTicketRequest } from '../../models/assign-ticket.model';
+import { AgentWorkLoadResponse } from '../../models/agent-workload.model';
 
 @Injectable({
     providedIn: 'root'
@@ -14,5 +15,9 @@ export class AssignmentService {
 
     constructor(private http: HttpClient) { }
 
-
+    getAgentWorkload(agentId: string): Observable<AgentWorkLoadResponse[]> {
+        return this.http.get<AgentWorkLoadResponse[]>(
+            `/agents/${agentId}/workload`
+        );
+    }
 }
