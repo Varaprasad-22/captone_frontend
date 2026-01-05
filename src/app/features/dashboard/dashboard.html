@@ -1,1 +1,30 @@
-<p>dashboard works!</p>
+<h2>User Dashboard</h2>
+
+<div class="dashboard-container" *ngIf="dashboard">
+
+  <div class="card total">
+    <span class="title">Total Tickets</span>
+    <span class="count">{{ dashboard.total }}</span>
+  </div>
+
+  <div class="card open">
+    <span class="title">Open</span>
+    <span class="count">{{ dashboard.open }}</span>
+  </div>
+
+  <div class="card progress">
+    <span class="title">In Progress</span>
+    <span class="count">{{ dashboard.inProgress }}</span>
+  </div>
+
+  <div class="card assigned">
+    <span class="title">Assigned</span>
+    <span class="count">{{ dashboard.assigned }}</span>
+  </div>
+
+  <div class="card closed">
+    <span class="title">Closed</span>
+    <span class="count">{{ dashboard.closed }}</span>
+  </div>
+
+</div>
