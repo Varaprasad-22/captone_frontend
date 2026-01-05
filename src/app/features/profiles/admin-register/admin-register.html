@@ -1,0 +1,58 @@
+<h2>Admin – Create User</h2>
+
+<form (ngSubmit)="submit()" #f="ngForm">
+
+  <div>
+    <label>Name</label>
+    <input
+      type="text"
+      name="name"
+      [(ngModel)]="form.name"
+      required
+      minlength="3"
+    />
+  </div>
+
+  <div>
+    <label>Email</label>
+    <input
+      type="email"
+      name="email"
+      [(ngModel)]="form.email"
+      required
+    />
+  </div>
+
+  <div>
+    <label>Password</label>
+    <input
+      type="password"
+      name="password"
+      [(ngModel)]="form.password"
+      required
+      minlength="8"
+    />
+  </div>
+
+  <div>
+    <label>Role</label>
+    <select
+      name="role"
+      [(ngModel)]="form.role"
+      required
+    >
+      <option value="">-- Select Role --</option>
+      <option value="ROLE_USER">USER</option>
+      <option value="ROLE_AGENT">AGENT</option>
+      <option value="ROLE_MANAGER">MANAGER</option>
+    </select>
+  </div>
+
+  <button type="submit" [disabled]="loading || f.invalid">
+    {{ loading ? 'Creating...' : 'Create User' }}
+  </button>
+
+</form>
+
+<p class="success" *ngIf="message">{{ message }}</p>
+<p class="error" *ngIf="error">{{ error }}</p>

@@ -10,6 +10,7 @@ import { AssignTicket } from './features/assignment/assign-ticket/assign-ticket'
 import { GetAllTickets } from './features/ticket/get-all-tickets/get-all-tickets';
 import { ViewProfile } from './features/profiles/view-profile/view-profile';
 import { SlaEvents } from './features/profiles/sla-events/sla-events';
+import { AdminRegister } from './features/profiles/admin-register/admin-register';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
@@ -23,5 +24,7 @@ export const routes: Routes = [
   { path: 'getAllTickets', component: GetAllTickets, canActivate: [authGuard] },
     { path: 'adminViewProfiles', component: ViewProfile, canActivate: [authGuard] },
     
-    { path: 'admin/sleEvents', component: SlaEvents, canActivate: [authGuard] }
+    { path: 'admin/sleEvents', component: SlaEvents, canActivate: [authGuard] },
+        
+    { path: 'admin/register', component: AdminRegister, canActivate: [authGuard] },
 ];
