@@ -1,0 +1,70 @@
+<h2>SLA Events (Admin)</h2>
+
+<div style="margin-bottom: 12px;">
+  <input
+    type="text"
+    placeholder="Agent ID"
+    [(ngModel)]="agentId"
+  />
+
+  <button (click)="searchByAgent()">Search</button>
+  <button (click)="loadEvents()">Reset</button>
+</div>
+
+
+<p *ngIf="events.length === 0">
+  No SLA events found
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Event ID</th>
+      <th>Ticket</th>
+      <th>Assignment</th>
+      <th>Agent</th>
+      <th>Type</th>
+      <th>Occurred At</th>
+      <th>Remarks</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let e of events">
+      <td>{{ e.eventId }}</td>
+      <td>{{ e.ticketId }}</td>
+      <td>{{ e.assignmentId }}</td>
+      <td>{{ e.agentId }}</td>
+      <td
+        [style.color]="e.eventType === 'BREACHED' ? 'red' : 'orange'"
+      >
+        {{ e.eventType }}
+      </td>
+      <td>{{ e.occurredAt | date:'short' }}</td>
+      <td>{{ e.remarks }}</td>
+    </tr>
+  </tbody>
+</table>
+    
+<div
+  *ngIf=" totalPages > 1"
+  style="margin-top: 12px;"
+>
+  <button
+    (click)="prevPage()"
+    [disabled]="page === 0 || isAgentSearch"
+  >
+    Prev
+  </button>
+
+  <span>
+    Page {{ page + 1 }} of {{ totalPages }}
+  </span>
+
+  <button
+    (click)="nextPage()"
+    [disabled]="page === totalPages - 1 || isAgentSearch"
+  >
+    Next
+  </button>
+</div>

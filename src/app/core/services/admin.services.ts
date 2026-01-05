@@ -4,29 +4,37 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environments';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class AdminService {
 
-    private baseUrl = `${environment.apiGateway}/auth`;
+  private baseUrl = `${environment.apiGateway}/auth`;
 
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-    getUsersByRole(role: string): Observable<any[]> {
-        return this.http.get<any>(`${this.baseUrl}/users/${role}`);
-    }
+  getUsersByRole(role: string): Observable<any[]> {
+    return this.http.get<any>(`${this.baseUrl}/users/${role}`);
+  }
 
-    toggleUserStatus(userId: string, active: boolean): Observable<void> {
-        return this.http.put<void>(
-            `${this.baseUrl}/deactivate/${userId}`,
-            { active }
-        );
-    }
-      updateUserRole(userId: string, role: string) {
+  toggleUserStatus(userId: string, active: boolean): Observable<void> {
+    return this.http.put<void>(
+      `${this.baseUrl}/deactivate/${userId}`,
+      { active }
+    );
+  }
+  updateUserRole(userId: string, role: string) {
     return this.http.put<void>(
       `${this.baseUrl}/users/${userId}/role`,
       { role }
     );
   }
+   registerUser(payload: any) {
+    return this.http.post(
+      `${this.baseUrl}/admin/register`,
+      payload,
+      { responseType: 'text' } 
+    );
+  }
+
 }

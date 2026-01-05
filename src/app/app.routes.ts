@@ -9,6 +9,7 @@ import { GetAllOpenTickets } from './features/ticket/get-all-open-tickets/get-al
 import { AssignTicket } from './features/assignment/assign-ticket/assign-ticket';
 import { GetAllTickets } from './features/ticket/get-all-tickets/get-all-tickets';
 import { ViewProfile } from './features/profiles/view-profile/view-profile';
+import { SlaEvents } from './features/profiles/sla-events/sla-events';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
@@ -20,5 +21,7 @@ export const routes: Routes = [
   { path: 'allopentickets', component: GetAllOpenTickets, canActivate: [authGuard] },
   { path: 'manager/assign/:ticketId', component: AssignTicket, canActivate: [authGuard] },
   { path: 'getAllTickets', component: GetAllTickets, canActivate: [authGuard] },
-    { path: 'adminViewProfiles', component: ViewProfile, canActivate: [authGuard] }
+    { path: 'adminViewProfiles', component: ViewProfile, canActivate: [authGuard] },
+    
+    { path: 'admin/sleEvents', component: SlaEvents, canActivate: [authGuard] }
 ];
