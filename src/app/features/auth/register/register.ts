@@ -1,6 +1,6 @@
 import { Component ,ChangeDetectorRef} from '@angular/core';
 import { AuthService } from '../../../core/services/auth.services';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -14,19 +14,22 @@ import { RouterModule } from '@angular/router';
 export class Register {
 
   
-  form = {
-    name: '',
-    email: '',
-    password: ''
-  };
+  form :FormGroup
 
   loading = false;
   message = '';
   error = '';
 
   constructor(private authService: AuthService,
-    private cdr:ChangeDetectorRef
-  ) {}
+    private cdr:ChangeDetectorRef,
+    private fb:FormBuilder
+  ) {
+     this.form = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+    });
+  }
 
   submit() {
     this.message = '';
@@ -39,7 +42,11 @@ export class Register {
         next: (res: any) => {
           this.message = res;
           this.loading = false;
-          this.resetForm();
+            this.form.reset({
+        name: '',
+        email: '',
+        password: ''
+      });
           this.cdr.detectChanges();
         },
         error: (err) => {
@@ -55,11 +62,5 @@ export class Register {
       });
   }
 
-  resetForm() {
-    this.form = {
-      name: '',
-      email: '',
-      password: ''
-    };
-  }
+
 }

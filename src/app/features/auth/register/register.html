@@ -1,45 +1,89 @@
-<h2>User Registration</h2>
+<div class="split-wrapper">
 
-<form (ngSubmit)="submit()" #f="ngForm">
-
-  <div>
-    <label>Name</label>
-    <input
-      type="text"
-      name="name"
-      [(ngModel)]="form.name"
-      required
-      minlength="3"
-    />
+  <div class="visual-side">
+    
+    <div class="brand-content">
+      <div class="logo-icon">
+        <i class="fas fa-ticket-alt"></i>
+      </div>
+      <h1>Join Us</h1>
+      <p>Create an account to start managing your tickets and support requests efficiently.</p>
+    </div>
   </div>
 
-  <div>
-    <label>Email</label>
-    <input
-      type="email"
-      name="email"
-      [(ngModel)]="form.email"
-      required
-      email
-    />
+  <div class="form-side">
+    <div class="form-container">
+      
+      <div class="form-header">
+        <h2>Create Account</h2>
+        <p>Get started with your free account today.</p>
+      </div>
+
+      <form (ngSubmit)="submit()" #f="ngForm">
+
+        <div class="input-group">
+          <label class="input-label">Full Name</label>
+          <input 
+            type="text" 
+            class="modern-input" 
+            name="name" 
+            [(ngModel)]="form.name" 
+            placeholder="John Doe"
+            required 
+            minlength="3"
+          >
+          <i class="fas fa-user input-icon"></i>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Email Address</label>
+          <input 
+            type="email" 
+            class="modern-input" 
+            name="email" 
+            [(ngModel)]="form.email" 
+            placeholder="john@example.com"
+            required 
+            email
+          >
+          <i class="fas fa-envelope input-icon"></i>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Password</label>
+          <input 
+            type="password" 
+            class="modern-input" 
+            name="password" 
+            [(ngModel)]="form.password" 
+            placeholder="Min 8 characters"
+            required 
+            minlength="8"
+          >
+          <i class="fas fa-lock input-icon"></i>
+        </div>
+
+        <button type="submit" class="btn-register" [disabled]="loading || f.invalid">
+          {{ loading ? 'Creating Account...' : 'Sign Up' }}
+        </button>
+
+      </form>
+
+      <div class="alert alert-success" *ngIf="message">
+        <i class="fas fa-check-circle"></i>
+        <span>{{ message }}</span>
+      </div>
+
+      <div class="alert alert-error" *ngIf="error">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>{{ error }}</span>
+      </div>
+
+      <div class="login-link">
+        Already have an account? <a routerLink="/login">Log in</a>
+      </div>
+
+    </div>
   </div>
 
-  <div>
-    <label>Password</label>
-    <input
-      type="password"
-      name="password"
-      [(ngModel)]="form.password"
-      required
-      minlength="8"
-    />
-  </div>
-
-  <button type="submit" [disabled]="loading || f.invalid">
-    {{ loading ? 'Registering...' : 'Register' }}
-  </button>
-
-</form>
-
-<p class="success" *ngIf="message">{{ message }}</p>
-<p class="error" *ngIf="error">{{ error }}</p>
+</div>
