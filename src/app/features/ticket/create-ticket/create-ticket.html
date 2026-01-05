@@ -1,27 +1,104 @@
-<p>create-ticket works!</p>
-<form [formGroup]="ticketForm" (ngSubmit)="submit()">
+<div class="ticket-card">
+  
+  <div class="form-header">
+    <h2>Create New Ticket</h2>
+    <p>Fill in the details below to submit a support request.</p>
+  </div>
 
-  <input type="text" placeholder="Title" formControlName="title">
+  <form [formGroup]="ticketForm" (ngSubmit)="submit()">
 
-  <textarea placeholder="Description"
-            formControlName="description"></textarea>
+    <div class="form-group">
+      <label>Issue Title<span style="color:red">*</span></label>
+      <input 
+        type="text" 
+        class="modern-input" 
+        placeholder="Brief summary of the issue" 
+        formControlName="title"
+      >
+      <!-- <small *ngIf="ticketForm.get('title')?.invalid && ticketForm.get('title')?.touched" style="color:red; font-size:11px;">Title is required</small> -->
+    <small *ngIf="ticketForm.get('title')?.touched && ticketForm.get('title')?.errors" style="color:red; font-size:11px;">
+  <span *ngIf="ticketForm.get('title')?.errors?.['required']">
+    Title is mandatory
+  </span>
+  <span *ngIf="ticketForm.get('title')?.errors?.['minlength']">
+    Title must be between 5 and 100 characters
+  </span>
 
-  <select formControlName="Category">
-    <option value="">Select Category</option>
-    <option *ngFor="let c of categories" [value]="c">
-      {{ c }}
-    </option>
-  </select>
+</small>
+    </div>
 
-  <input type="file" multiple (change)="onFileChange($event)">
+    <div class="form-group">
+      <label>Category<span style="color:red">*</span></label>
+      <select class="modern-select" formControlName="Category">
+        <option value="" disabled selected>Select a category</option>
+        <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+      </select>
+      <small *ngIf="ticketForm.get('Category')?.touched && ticketForm.get('Category')?.invalid"
+       style="color:red; font-size:11px;">
+  Category required mandatory
+</small>
+    </div>
 
-  <button type="submit">Create Ticket</button>
+    <div class="form-group">
+      <label>Description<span style="color:red">*</span></label>
+      <textarea 
+        class="modern-textarea" 
+        placeholder="Please describe the issue in detail..." 
+        formControlName="description">
+      </textarea>
+      <small *ngIf="ticketForm.get('description')?.touched && ticketForm.get('description')?.errors"
+       style="color:red; font-size:11px;">
+  <span *ngIf="ticketForm.get('description')?.errors?.['required']">
+    Description is mandatory
+  </span>
+  <span *ngIf="ticketForm.get('description')?.errors?.['minlength']">
+    Description must be between 10 and 500 characters
+  </span>
 
-  <p class="success" *ngIf="successMessage">
-    {{ successMessage }}
-  </p>
+</small>
+    </div>
 
-  <p class="error" *ngIf="errorMessage">
-    {{ errorMessage }}
-  </p>
-</form>
+    <div class="form-group">
+      <label>Attachments (Optional)</label>
+      
+      <div class="file-upload-container">
+        <input type="file" class="file-input" multiple (change)="onFileChange($event)">
+        
+        <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <div class="upload-text">
+          <span *ngIf="files.length === 0">Drag files here or click to browse</span>
+          <span *ngIf="files.length > 0">{{ files.length }} file(s) selected</span>
+        </div>
+        <div class="upload-hint">Supported formats: JPG, PNG, PDF</div>
+      </div>
+
+      <div class="file-list" *ngIf="files.length > 0">
+        <div class="file-item" *ngFor="let file of files; let i = index">
+          <span><i class="fas fa-paperclip"></i> {{ file.name }}</span>
+          <span class="remove-file" (click)="removeFile(i)">×</span>
+        </div>
+      </div>
+    </div>
+<div *ngIf="successMessage" style="color:green; margin-top:10px; font-size:13px;">
+  {{ successMessage }}
+</div>
+
+<div *ngIf="errorMessage" style="color:red; margin-top:10px; font-size:13px;">
+  {{ errorMessage }}
+</div>
+    <button type="submit" class="btn-submit" [disabled]="ticketForm.invalid">
+      Submit Ticket
+    </button>
+
+  </form>
+</div>
+
+<div class="toast-container" *ngIf="toastMessage">
+  <div class="toast" [ngClass]="toastType">
+    <div class="toast-content">
+      <i class="fas" [ngClass]="toastType === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'"></i>
+      <div class="toast-message">{{ toastMessage }}</div>
+    </div>
+    <button class="btn-close" (click)="closeToast()">×</button>
+  </div>
+</div>

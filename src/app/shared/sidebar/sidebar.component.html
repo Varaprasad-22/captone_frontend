@@ -1,0 +1,78 @@
+<aside class="sidebar">
+  
+  <div class="brand-section">
+    <div class="logo-container">
+      <div class="logo-bg">
+        <i class="fas fa-ticket-alt"></i>
+      </div>
+    </div>
+    <div class="brand-text">
+      <h2>Ticket<span>Master</span></h2>
+
+    </div>
+  </div>
+
+  <div class="user-profile-glass">
+    <div class="avatar-circle">
+      {{ userName.charAt(0).toUpperCase() }}
+    </div>
+    <div class="profile-info">
+      <span class="profile-name">{{ userName }}</span>
+      <span class="profile-role">{{ userRole.replace('ROLE_', '') }}</span>
+    </div>
+    <i class="fas fa-cog settings-icon"></i>
+  </div>
+  
+  <nav class="nav-links">
+    
+    <a [routerLink]="dashboardRoute" routerLinkActive="active-link" class="nav-item">
+      <span class="icon"><i class="fas fa-th-large"></i></span>
+      <span class="title">Dashboard</span>
+      <span class="curve-top"></span>
+      <span class="curve-bottom"></span>
+    </a>
+
+    <ng-container *ngIf="userRole === 'ROLE_USER'">
+      <p class="section-header">TICKETS</p>
+      <a routerLink="/tickets/create" routerLinkActive="active-link" class="nav-item">
+        <span class="icon"><i class="fas fa-plus-circle"></i></span>
+        <span class="title">Create New</span>
+        <span class="curve-top"></span>
+        <span class="curve-bottom"></span>
+      </a>
+      <a routerLink="/tickets/userTicket" routerLinkActive="active-link" class="nav-item">
+        <span class="icon"><i class="fas fa-list-alt"></i></span>
+        <span class="title">My Tickets</span>
+        <span class="curve-top"></span>
+        <span class="curve-bottom"></span>
+      </a>
+    </ng-container>
+
+    <ng-container *ngIf="userRole === 'ROLE_ADMIN'">
+      <p class="section-header">ADMINISTRATION</p>
+      <a routerLink="/admin/register" routerLinkActive="active-link" class="nav-item">
+        <span class="icon"><i class="fas fa-user-plus"></i></span>
+        <span class="title">Register User</span>
+        <span class="curve-top"></span>
+        <span class="curve-bottom"></span>
+      </a>
+      <a routerLink="/admin/profiles" routerLinkActive="active-link" class="nav-item">
+        <span class="icon"><i class="fas fa-users-cog"></i></span>
+        <span class="title">Manage Users</span>
+        <span class="curve-top"></span>
+        <span class="curve-bottom"></span>
+      </a>
+    </ng-container>
+
+    </nav>
+
+  <div class="sidebar-footer">
+    <div class="circle-decoration"></div> 
+    
+    <a (click)="logout()" class="nav-item logout-btn">
+      <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+      <span class="title">Logout</span>
+    </a>
+  </div>
+
+</aside>

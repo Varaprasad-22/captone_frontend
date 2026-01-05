@@ -52,4 +52,8 @@ this.role = user.role ?? '';
   openTicket(ticketId: string) {
     this.router.navigate(['/viewTicket',ticketId]);
   }
+
+  goToCreate(){
+    this.router.navigate(['tickets/create'])
+  }
 }

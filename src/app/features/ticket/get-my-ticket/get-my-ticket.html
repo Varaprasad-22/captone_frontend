@@ -1,40 +1,80 @@
-<p>get-my-ticket works!</p>
-<h2>My Tickets</h2>
+<div class="page-header">
+  <div class="page-title">
+    <h1>My Tickets</h1>
+    <p>Track and manage your support requests</p>
+  </div>
+  
+  <button class="btn-create" (click)="goToCreate()">
+    <i class="fas fa-plus"></i> Create Ticket
+  </button>
+</div>
 
-<p *ngIf="loading">Loading tickets...</p>
+<div *ngIf="loading" class="loading-wrapper">
+  <div class="loader"></div>
+</div>
 
-<p class="error" *ngIf="errorMessage">
+<div *ngIf="errorMessage" class="error-banner">
+  <i class="fas fa-exclamation-triangle"></i>
   {{ errorMessage }}
-</p>
+</div>
 
-<table *ngIf="!loading && tickets.length">
-  <thead>
-    <tr>
-      <th>Ticket ID</th>
-      <th>Title</th>
-      <th>Category</th>
-      <th>Status</th>
-      <th *ngIf="isAgent">Priority</th>
-      <th>Created At</th>
-      <th>Action</th>
-    </tr>
-  </thead>
+<div class="table-container" *ngIf="!loading && tickets.length > 0">
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Ticket ID</th>
+        <th>Subject</th>
+        <th>Category</th>
+        <th>Status</th>
+        <th>Created</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let t of tickets" (click)="openTicket(t.ticketId)">
+        
+        <td>
+          <span class="ticket-id">#{{ t.ticketId.substring(0,6) }}</span>
+        </td>
 
-  <tbody>
-    <tr *ngFor="let t of tickets">
-      <td>{{ t.ticketId }}</td>
-      <td>{{ t.title }}</td>
-      <td>{{ t.category }}</td>
-      <td>{{ t.status }}</td>
-      <td *ngIf="isAgent">{{ t.priority }}</td>
-      <td>{{ t.createdAt | date:'short' }}</td>
-      <td>
-        <button (click)="openTicket(t.ticketId)">View</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+        <td>
+          <span class="ticket-title">{{ t.title }}</span>
+        </td>
 
-<p *ngIf="!loading && !tickets.length">
-  No tickets found
-</p>
+        <td>
+          <span class="ticket-category">{{ t.category }}</span>
+        </td>
+
+        <td>
+          <span class="status-pill" [ngClass]="'status-' + t.status">
+            {{ t.status.replace('_', ' ') }}
+          </span>
+        </td>
+
+        <td>
+          <span style="color: #718096; font-size: 13px;">
+            {{ t.createdAt | date:'mediumDate' }}
+          </span>
+        </td>
+
+        <td>
+          <button class="btn-view">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="!loading && tickets.length === 0 && !errorMessage" class="table-container empty-state">
+  <div class="empty-icon">
+    <i class="far fa-folder-open"></i>
+  </div>
+  <h3>No Tickets Found</h3>
+  <p>You haven't submitted any support tickets yet.</p>
+  <button class="btn-create" style="margin: 20px auto;" (click)="goToCreate()">
+    Submit your first ticket
+  </button>
+</div>

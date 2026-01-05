@@ -1,2 +1,10 @@
 
-<router-outlet />
+<div style="display: flex; width: 100%;">
+  
+  <app-sidebar></app-sidebar>
+
+  <div style="flex: 1; height: 100vh; overflow-y: auto; background-color: #f3f6fd;">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>

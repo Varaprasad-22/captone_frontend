@@ -1,0 +1,238 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:host {
+  --bg-sidebar: #282846; 
+  --bg-content: #f3f6fd;
+  --active-color: #6c5dd3; 
+  --text-color: #a0a0b0;
+  --text-white: #ffffff;
+}
+
+.sidebar {
+  width: 280px;
+  height: 100vh;
+  background: var(--bg-sidebar);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  transition: width 0.3s;
+}
+
+.brand-section {
+  padding: 30px 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.logo-bg {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #6c5dd3 0%, #ff75c3 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+  box-shadow: 0 10px 20px rgba(108, 93, 211, 0.4);
+
+  transform: rotate(-5deg); 
+}
+
+.brand-text h2 {
+  font-size: 20px;
+  color: var(--text-white);
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.brand-text h2 span {
+  color: var(--active-color);
+}
+
+.brand-text p {
+  font-size: 12px;
+  color: var(--text-color);
+  margin: 2px 0 0 0;
+}
+
+.user-profile-glass {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 20px 20px 20px; 
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, background 0.3s;
+}
+
+.user-profile-glass:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a0a0b0, #6c6c80);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.profile-name {
+  color: var(--text-white);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+.profile-role {
+  color: var(--active-color); 
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.settings-icon {
+  color: var(--text-color);
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.settings-icon:hover {
+  color: var(--text-white);
+  transform: rotate(90deg);
+}
+.nav-links {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px; 
+  overflow-y: auto;
+}
+
+.section-header {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-color);
+  letter-spacing: 1px;
+  margin: 20px 0 10px 20px;
+  font-weight: 600;
+  opacity: 0.7;
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 20px;
+  text-decoration: none;
+  color: var(--text-color);
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  transition: 0.3s;
+  margin-bottom: 5px;
+}
+
+.nav-item .icon {
+  font-size: 20px;
+  min-width: 30px;
+  text-align: center;
+}
+
+.nav-item .title {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.nav-item:hover:not(.active-link) {
+  color: var(--text-white);
+  background: rgba(255, 255, 255, 0.05);
+}
+.active-link {
+  background: var(--bg-content);
+  color: var(--active-color);
+  font-weight: 600;
+}
+
+.active-link .curve-top {
+  position: absolute;
+  top: -20px;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border-bottom-right-radius: 20px;
+  box-shadow: 5px 5px 0 5px var(--bg-content);
+  pointer-events: none;
+}
+.active-link .curve-bottom {
+  position: absolute;
+  bottom: -20px;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border-top-right-radius: 20px;
+  box-shadow: 5px -5px 0 5px var(--bg-content);
+  pointer-events: none;
+}
+
+.active-link .icon {
+  color: var(--active-color);
+  filter: drop-shadow(0 2px 5px rgba(108, 93, 211, 0.4));
+}
+
+.sidebar-footer {
+  padding: 20px;
+  position: relative;
+}
+
+.logout-btn {
+  color: #ff7575;
+  border-radius: 15px;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 117, 117, 0.1);
+  color: #ff5252;
+}
+
+.circle-decoration {
+  position: absolute;
+  bottom: -50px;
+  left: -50px;
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, #6c5dd3, transparent);
+  border-radius: 50%;
+  opacity: 0.2;
+  filter: blur(20px);
+  pointer-events: none;
+}
