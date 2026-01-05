@@ -1,0 +1,25 @@
+<h2>System Dashboard</h2>
+
+<ng-container *ngIf="!loading; else loadingTpl">
+
+  <div class="dashboard">
+
+    <div class="card total"><span>Total Users</span><strong>{{ dashboard.totalUsers }}</strong></div>
+    <div class="card agent"><span>Agents</span><strong>{{ dashboard.agents }}</strong></div>
+    <div class="card manager"><span>Managers</span><strong>{{ dashboard.managers }}</strong></div>
+
+    <div class="card ticket"><span>Total Tickets</span><strong>{{ dashboard.totalTickets }}</strong></div>
+    <div class="card open"><span>Open</span><strong>{{ dashboard.open }}</strong></div>
+    <div class="card progress"><span>In Progress</span><strong>{{ dashboard.inProgress }}</strong></div>
+    <div class="card resolved"><span>Resolved</span><strong>{{ dashboard.resolved }}</strong></div>
+    <div class="card closed"><span>Closed</span><strong>{{ dashboard.closed }}</strong></div>
+    <div class="card escalated"><span>Escalated</span><strong>{{ dashboard.escalated }}</strong></div>
+    <div class="card breached"><span>Breached</span><strong>{{ dashboard.breached }}</strong></div>
+
+  </div>
+
+</ng-container>
+
+<ng-template #loadingTpl>
+  <div>Loading...</div>
+</ng-template>

@@ -39,6 +39,8 @@ export class LoginComponent {
       this.router.navigate(['/agent/dashboard']);
     } else if (user.role === 'ROLE_MANAGER') {
       this.router.navigate(['/manager/dashboard']);
+    }else if (user.role === 'ROLE_ADMIN') {
+      this.router.navigate(['/admin/dashboard']);
     }
         this.cdr.detectChanges();
       },

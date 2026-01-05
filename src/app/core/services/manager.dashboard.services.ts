@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class AdminDashboardService {
+export class ManagerDashboardService {
 
   constructor(private ticketService: TicketService) {}
 

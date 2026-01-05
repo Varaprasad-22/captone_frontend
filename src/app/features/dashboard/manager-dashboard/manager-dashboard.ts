@@ -1,5 +1,5 @@
 import { Component,ChangeDetectorRef } from '@angular/core';
-import { AdminDashboardService } from '../../../core/services/admin-dashboard.services';
+import {  ManagerDashboardService } from '../../../core/services/manager.dashboard.services';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -25,7 +25,7 @@ export class ManagerDashboard {
 
   loading = true;
 
-  constructor(private dashboardService: AdminDashboardService,
+  constructor(private dashboardService: ManagerDashboardService,
     private cdr:ChangeDetectorRef
   ) {
     this.dashboardService.getAdminDashboard().subscribe({

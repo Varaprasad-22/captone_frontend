@@ -14,6 +14,7 @@ import { AdminRegister } from './features/profiles/admin-register/admin-register
 import { Register } from './features/auth/register/register';
 import { AgentDashboard } from './features/dashboard/agent-dashboard/agent-dashboard';
 import { ManagerDashboard } from './features/dashboard/manager-dashboard/manager-dashboard';
+import { AdminDashboard } from './features/dashboard/admin-dashboard/admin-dashboard';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
@@ -24,6 +25,7 @@ export const routes: Routes = [
     { path: 'user/dashboard', component: DashboardComponent },
   { path: 'agent/dashboard', component: AgentDashboard },
   { path: 'manager/dashboard', component: ManagerDashboard },
+    { path: 'admin/dashboard', component: AdminDashboard },
   { path: 'tickets/create', component: CreateTicketComponent, canActivate: [authGuard] },
   { path: 'tickets/userTicket', component: GetMyTicket, canActivate: [authGuard] },
   { path: 'viewTicket/:id', component: OnSpecificTicket, canActivate: [authGuard] },

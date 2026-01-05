@@ -1,0 +1,191 @@
+/* Import Google Font for a premium look */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:host {
+  display: block;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f3f6fd; /* Soft blue-grey background */
+  min-height: 100vh;
+  padding: 2rem;
+  color: #2d3748;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+  animation: slideDown 0.6s ease-out;
+}
+
+.dashboard-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0;
+}
+
+.dashboard-header p {
+  color: #718096;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.dashboard-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+.stat-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 
+              0 4px 6px -2px rgba(0, 0, 0, 0.025);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 160px;
+  animation: fadeIn 0.8s ease-out forwards;
+  opacity: 0; /* For animation */
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* --- Card Content --- */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  z-index: 2;
+}
+
+.icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.card-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #718096;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+  z-index: 2;
+}
+
+.card-count {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a202c;
+  line-height: 1;
+  z-index: 2;
+}
+
+.card-total .icon-box {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+.card-total::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(67, 56, 202, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  transition: transform 0.5s ease;
+}
+
+.card-open .icon-box {
+  background: #ebf8ff;
+  color: #3182ce;
+}
+.card-open::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(49, 130, 206, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.card-progress .icon-box {
+  background: #fffaf0;
+  color: #dd6b20;
+}
+.card-progress::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(221, 107, 32, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.card-assigned .icon-box {
+  background: #e6fffa;
+  color: #319795;
+}
+
+.card-closed .icon-box {
+  background: #f0fff4;
+  color: #38a169;
+}
+
+.stat-card:hover::before {
+  transform: scale(1.5);
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  color: #718096;
+  font-weight: 500;
+}
+
+.error-container {
+  text-align: center;
+  color: #e53e3e;
+  padding: 2rem;
+  background: #fff5f5;
+  border-radius: 12px;
+  border: 1px solid #fed7d7;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Stagger animation delays for cards */
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; }
+.stat-card:nth-child(4) { animation-delay: 0.4s; }
+.stat-card:nth-child(5) { animation-delay: 0.5s; }
