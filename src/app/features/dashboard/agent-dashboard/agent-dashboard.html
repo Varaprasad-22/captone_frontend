@@ -1,0 +1,27 @@
+<h2>Agent Dashboard</h2>
+
+<div *ngIf="loading">Loading...</div>
+
+<div class="dashboard" *ngIf="!loading">
+
+  <div class="card total">
+    <span>Total Tickets</span>
+    <strong>{{ dashboard.totalTickets }}</strong>
+  </div>
+
+  <div class="card active">
+    <span>Active</span>
+    <strong>{{ dashboard.active }}</strong>
+  </div>
+
+  <div class="card breached">
+    <span>Breached</span>
+    <strong>{{ dashboard.breached }}</strong>
+  </div>
+
+  <div class="card escalations">
+    <span>Escalations</span>
+    <strong>{{ dashboard.escalations }}</strong>
+  </div>
+
+</div>

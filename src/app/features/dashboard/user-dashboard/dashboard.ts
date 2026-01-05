@@ -1,6 +1,6 @@
 import { Component,ChangeDetectorRef } from '@angular/core';
-import { UserDashboardResponse } from '../../models/user.dashboard.model';
-import { DashboardService } from '../../core/services/dashboard.services';
+import { UserDashboardResponse } from '../../../models/user.dashboard.model';
+import { DashboardService } from '../../../core/services/dashboard.services';
 import { CommonModule } from '@angular/common';
 
 @Component({

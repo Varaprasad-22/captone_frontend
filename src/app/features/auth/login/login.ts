@@ -31,7 +31,15 @@ export class LoginComponent {
     if (this.loginForm.invalid) return;
 
     this.auth.login(this.loginForm.value).subscribe({
-      next: () => {this.router.navigate(['/dashboard'])
+      next: () => {
+          const user = this.auth.getUser();
+         if (user.role === 'ROLE_USER') {
+      this.router.navigate(['/user/dashboard']);
+    } else if (user.role === 'ROLE_AGENT') {
+      this.router.navigate(['/agent/dashboard']);
+    } else if (user.role === 'ROLE_MANAGER') {
+      this.router.navigate(['/manager/dashboard']);
+    }
         this.cdr.detectChanges();
       },
 

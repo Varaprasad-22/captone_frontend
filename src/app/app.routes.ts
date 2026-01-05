@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './features/auth/login/login';
-import { DashboardComponent } from './features/dashboard/dashboard';
+import { DashboardComponent } from './features/dashboard/user-dashboard/dashboard';
 import { authGuard } from './core/guards/auth.gaurd';
 import { CreateTicketComponent } from './features/ticket/create-ticket/create-ticket';
 import { GetMyTicket } from './features/ticket/get-my-ticket/get-my-ticket';
@@ -12,13 +12,17 @@ import { ViewProfile } from './features/profiles/view-profile/view-profile';
 import { SlaEvents } from './features/profiles/sla-events/sla-events';
 import { AdminRegister } from './features/profiles/admin-register/admin-register';
 import { Register } from './features/auth/register/register';
+import { AgentDashboard } from './features/dashboard/agent-dashboard/agent-dashboard';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
   { path: 'login', component: LoginComponent },
   
   { path: 'register', component: Register },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+  // { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+    { path: 'user/dashboard', component: DashboardComponent },
+  { path: 'agent/dashboard', component: AgentDashboard },
+  // { path: 'manager/dashboard', component: ManagerDashboardComponent },
   { path: 'tickets/create', component: CreateTicketComponent, canActivate: [authGuard] },
   { path: 'tickets/userTicket', component: GetMyTicket, canActivate: [authGuard] },
   { path: 'viewTicket/:id', component: OnSpecificTicket, canActivate: [authGuard] },
