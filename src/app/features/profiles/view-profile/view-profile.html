@@ -1,0 +1,33 @@
+<h2>Admin Panel</h2>
+
+<select [(ngModel)]="selectedRole" (change)="loadUsers()">
+  <option value="ROLE_USER">Users</option>
+  <option value="ROLE_AGENT">Agents</option>
+  <option value="ROLE_MANAGER">Managers</option>
+</select>
+
+<p *ngIf="loading">Loading...</p>
+
+<table *ngIf="!loading && users.length">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let u of users">
+      <td>{{ u.name }}</td>
+      <td>{{ u.email }}</td>
+      <td>{{ u.active ? 'Active' : 'Inactive' }}</td>
+      <td>
+        <button (click)="toggleStatus(u)">
+          {{ u.active ? 'Deactivate' : 'Activate' }}
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
