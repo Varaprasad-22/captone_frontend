@@ -11,10 +11,13 @@ import { GetAllTickets } from './features/ticket/get-all-tickets/get-all-tickets
 import { ViewProfile } from './features/profiles/view-profile/view-profile';
 import { SlaEvents } from './features/profiles/sla-events/sla-events';
 import { AdminRegister } from './features/profiles/admin-register/admin-register';
+import { Register } from './features/auth/register/register';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
   { path: 'login', component: LoginComponent },
+  
+  { path: 'register', component: Register },
   { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
   { path: 'tickets/create', component: CreateTicketComponent, canActivate: [authGuard] },
   { path: 'tickets/userTicket', component: GetMyTicket, canActivate: [authGuard] },

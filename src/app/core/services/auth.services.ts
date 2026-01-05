@@ -67,5 +67,12 @@ export class AuthService {
         );
     }
 
-
+  register(payload: any) {
+    return this.http.post(
+      `${this.baseUrl}/register`,
+      payload,
+      { responseType: 'text' } 
+    );
+  }
+    
 }
