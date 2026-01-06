@@ -29,6 +29,10 @@ export const routes: Routes = [
   { path: 'tickets/create', component: CreateTicketComponent, canActivate: [authGuard] },
   { path: 'tickets/userTicket', component: GetMyTicket, canActivate: [authGuard] },
 
+//
+  { path: 'admin/user-tickets/:id', component: GetMyTicket, canActivate: [authGuard] },
+  { path: 'admin/agent-tickets/:id', component: GetMyTicket, canActivate: [authGuard] },
+
     { path: 'tickets/resolvedTickets', component: GetMyTicket, canActivate: [authGuard] },
   { path: 'viewTicket/:id', component: OnSpecificTicket, canActivate: [authGuard] },
   { path: 'allopentickets', component: GetAllOpenTickets, canActivate: [authGuard] },

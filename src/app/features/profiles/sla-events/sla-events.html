@@ -1,70 +1,109 @@
-<h2>SLA Events (Admin)</h2>
+<div class="page-container">
+  <div class="content-card">
 
-<div style="margin-bottom: 12px;">
-  <input
-    type="text"
-    placeholder="Agent ID"
-    [(ngModel)]="agentId"
-  />
+    <div class="toolbar">
+      <div class="header-info">
+        <h2>SLA Audit Log</h2>
+        <p>Track SLA breaches and warning events.</p>
+      </div>
 
-  <button (click)="searchByAgent()">Search</button>
-  <button (click)="loadEvents()">Reset</button>
-</div>
+      <div class="search-group">
+        <div class="input-wrapper">
+          <i class="fas fa-search search-icon"></i>
+          <input 
+            type="text" 
+            placeholder="Search Agent ID..." 
+            [(ngModel)]="agentId" 
+            (keyup.enter)="searchByAgent()"
+            class="search-input"
+          />
+        </div>
+        <button class="btn btn-primary" (click)="searchByAgent()">
+          Search
+        </button>
+        <button class="btn btn-outline" (click)="reset()">
+          Reset
+        </button>
+      </div>
+    </div>
 
+    <div class="empty-state" *ngIf="events.length === 0">
+      <div class="icon-circle">
+        <i class="fas fa-clipboard-check"></i>
+      </div>
+      <h3>No Events Found</h3>
+      <p>There are no SLA events matching your criteria.</p>
+    </div>
 
-<p *ngIf="events.length === 0">
-  No SLA events found
-</p>
+    <div class="table-responsive" *ngIf="events.length > 0">
+      <table class="sla-table">
+        <thead>
+          <tr>
+            <th>Event ID</th>
+            <th>Ticket Ref</th>
+            <th>Type</th>
+            <th>Assigned To</th>
+            <th>Occurred At</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let e of events">
+            <td class="text-mono">#{{ e.eventId }}</td>
+            
+            <td>
+              <div class="ticket-info">
+                <i class="fas fa-ticket-alt"></i>
+                <span>{{ e.ticketId }}</span>
+              </div>
+            </td>
 
-<table>
-  <thead>
-    <tr>
-      <th>Event ID</th>
-      <th>Ticket</th>
-      <th>Assignment</th>
-      <th>Agent</th>
-      <th>Type</th>
-      <th>Occurred At</th>
-      <th>Remarks</th>
-    </tr>
-  </thead>
+            <td>
+              <span class="badge" [ngClass]="e.eventType === 'BREACHED' ? 'badge-breach' : 'badge-warning'">
+                <i class="fas" [ngClass]="e.eventType === 'BREACHED' ? 'fa-exclamation-circle' : 'fa-clock'"></i>
+                {{ e.eventType }}
+              </span>
+            </td>
 
-  <tbody>
-    <tr *ngFor="let e of events">
-      <td>{{ e.eventId }}</td>
-      <td>{{ e.ticketId }}</td>
-      <td>{{ e.assignmentId }}</td>
-      <td>{{ e.agentId }}</td>
-      <td
-        [style.color]="e.eventType === 'BREACHED' ? 'red' : 'orange'"
-      >
-        {{ e.eventType }}
-      </td>
-      <td>{{ e.occurredAt | date:'short' }}</td>
-      <td>{{ e.remarks }}</td>
-    </tr>
-  </tbody>
-</table>
-    
-<div
-  *ngIf=" totalPages > 1"
-  style="margin-top: 12px;"
->
-  <button
-    (click)="prevPage()"
-    [disabled]="page === 0 || isAgentSearch"
-  >
-    Prev
-  </button>
+            <td>
+              <div class="agent-info">
+                <span class="agent-label">Agent:</span>
+                <strong>{{ e.agentId }}</strong>
+                <span class="assignment-id">(Ref: {{ e.assignmentId }})</span>
+              </div>
+            </td>
 
-  <span>
-    Page {{ page + 1 }} of {{ totalPages }}
-  </span>
+            <td>{{ e.occurredAt | date:'medium' }}</td>
+            
+            <td class="remarks-col">{{ e.remarks }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <button
-    (click)="nextPage()"
-    [disabled]="page === totalPages - 1 || isAgentSearch"
-  >
-    Next
-  </button>
+    <div class="pagination-footer" *ngIf="totalPages > 1 && !isAgentSearch">
+      <div class="page-info">
+        Showing page <strong>{{ page + 1 }}</strong> of <strong>{{ totalPages }}</strong>
+      </div>
+      
+      <div class="page-actions">
+        <button 
+          class="btn-page" 
+          (click)="prevPage()" 
+          [disabled]="page === 0"
+        >
+          <i class="fas fa-chevron-left"></i> Prev
+        </button>
+
+        <button 
+          class="btn-page" 
+          (click)="nextPage()" 
+          [disabled]="page === totalPages - 1"
+        >
+          Next <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
 </div>

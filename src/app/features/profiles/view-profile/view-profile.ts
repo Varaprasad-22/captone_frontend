@@ -2,6 +2,7 @@ import { Component,ChangeDetectorRef } from '@angular/core';
 import { AdminService } from '../../../core/services/admin.services';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-profile',
@@ -15,7 +16,8 @@ export class ViewProfile {
   loading = false;
 
   constructor(private adminService: AdminService,
-    private cdr:ChangeDetectorRef
+    private cdr:ChangeDetectorRef,
+    private router:Router
   ) {
 
     this.loadUsers();
@@ -54,4 +56,13 @@ export class ViewProfile {
       error: err => alert(err.error?.message || 'Role update failed')
     });
 }
+
+viewDashboard(user: any) {
+    if (user.role === 'ROLE_AGENT') {
+      this.router.navigate(['/admin/agent-tickets', user.userId]);
+    } else {
+      // For ROLE_USER and ROLE_MANAGER (viewing their personal tickets)
+      this.router.navigate(['/admin/user-tickets', user.userId]);
+    }
+  }
   }

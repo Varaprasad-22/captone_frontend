@@ -1,5 +1,5 @@
 <aside class="sidebar">
-  
+
   <div class="brand-section">
     <div class="logo-container">
       <div class="logo-bg">
@@ -22,9 +22,9 @@
     </div>
     <i class="fas fa-cog settings-icon"></i>
   </div>
-  
+
   <nav class="nav-links">
-    
+
     <a [routerLink]="dashboardRoute" routerLinkActive="active-link" class="nav-item">
       <span class="icon"><i class="fas fa-th-large"></i></span>
       <span class="title">Dashboard</span>
@@ -50,7 +50,7 @@
 
     <ng-container *ngIf="userRole === 'ROLE_AGENT'">
       <p class="section-header">WORKSPACE</p>
-      
+
       <a routerLink="/tickets/userTicket" routerLinkActive="active-link" class="nav-item">
         <span class="icon"><i class="fas fa-headset"></i></span>
         <span class="title">My Assignments</span>
@@ -66,10 +66,10 @@
         <span class="curve-bottom"></span>
       </a>
     </ng-container>
-    
+
     <ng-container *ngIf="userRole === 'ROLE_MANAGER'">
       <p class="section-header">TEAM OVERSIGHT</p>
-      
+
       <a routerLink="/getAllTickets" routerLinkActive="active-link" class="nav-item">
         <span class="icon"><i class="fas fa-layer-group"></i></span>
         <span class="title">All Tickets</span>
@@ -106,13 +106,25 @@
         <span class="curve-top"></span>
         <span class="curve-bottom"></span>
       </a>
+      <a routerLink="/admin/sleEvents" routerLinkActive="active-link" class="nav-item">
+        <span class="icon"><i class="fas fa-users-cog"></i></span>
+        <span class="title">Sla Event</span>
+        <span class="curve-top"></span>
+        <span class="curve-bottom"></span>
+      </a>
+      <a routerLink="/getAllTickets" routerLinkActive="active-link" class="nav-item">
+        <span class="icon"><i class="fas fa-layer-group"></i></span>
+        <span class="title">All Tickets</span>
+        <span class="curve-top"></span>
+        <span class="curve-bottom"></span>
+      </a>
     </ng-container>
 
-    </nav>
+  </nav>
 
   <div class="sidebar-footer">
-    <div class="circle-decoration"></div> 
-    
+    <div class="circle-decoration"></div>
+
     <a (click)="logout()" class="nav-item logout-btn">
       <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
       <span class="title">Logout</span>

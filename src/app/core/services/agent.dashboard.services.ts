@@ -21,9 +21,9 @@ export class AgentDashboardService {
   ) {}
 
   getAgentDashboard() {
-    const agentId = this.authService.getUser().id;
+    const agentId = this.authService.getUser().id?? undefined;
 
-    const tickets$ = this.ticketService.getUserTickets(); // existing
+    const tickets$ = this.ticketService.getAgentTickets(agentId); // existing
     const workload$ = this.http.get<any[]>(
       `${this.baseUrl}/${agentId}/workload`
     );

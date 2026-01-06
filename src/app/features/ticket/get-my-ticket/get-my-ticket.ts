@@ -19,31 +19,56 @@ export class GetMyTicket {
 
   role!:string;
   isAgent=false;
-
+isAdminView=false;
   constructor(
     private ticketService: TicketService,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private authService:AuthService,
         private route: ActivatedRoute
-  ) {
-    const user = this.authService.getUser();
-this.role = user.role ?? ''; 
-    this.isAgent = this.role === 'ROLE_AGENT';
+  ) { this.checkContextAndLoad();}
+checkContextAndLoad() {
+    this.loading = true;
+    const routeId = this.route.snapshot.paramMap.get('id');
+    const path = this.route.snapshot.routeConfig?.path;
 
-    if (this.route.snapshot.routeConfig?.path === 'tickets/userTicket') {
-      this.loadTickets();
-    } else if (this.route.snapshot.routeConfig?.path === 'tickets/resolvedTickets') {
+    // 1. Admin Viewing Agent Tickets
+    if (path?.includes('admin/agent-tickets') && routeId) {
+      this.isAdminView = true;
+      this.isAgent = true; // Force agent view layout
+      this.loadAgentTickets(routeId);
+    } 
+    // 2. Admin Viewing User Tickets
+    else if (path?.includes('admin/user-tickets') && routeId) {
+      this.isAdminView = true;
+      this.isAgent = false; // Force user view layout
+      this.loadUserTickets(routeId);
+    }
+    // 3. Logged in Agent viewing resolved tickets
+    else if (path === 'tickets/resolvedTickets') {
+      this.setupLoggedInUser();
       this.loadResolvedTickets();
+    } 
+    // 4. Default: Logged in User/Agent viewing their own tickets
+    else {
+      this.setupLoggedInUser();
+      if(this.isAgent) {
+         this.loadAgentTickets();
+      } else {
+         this.loadUserTickets();
+      }
     }
   }
-
-  loadTickets(){
-
-
-    this.ticketService.getUserTickets().subscribe({
+setupLoggedInUser() {
+    const user = this.authService.getUser();
+    this.role = user.role ?? '';
+    this.isAgent = this.role === 'ROLE_AGENT';
+  }
+// Modified to accept ID
+  loadUserTickets(targetId?: string) {
+    this.ticketService.getUserTickets(targetId).subscribe({
       next: (res) => {
-        this.tickets = res; //  List<TicketResponse>
+        this.tickets = res;
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -53,7 +78,21 @@ this.role = user.role ?? '';
         this.cdr.detectChanges();
       }
     });
-  
+  }
+
+  loadAgentTickets(targetId?: string) {
+    this.ticketService.getAgentTickets(targetId).subscribe({
+      next: (res) => {
+        this.tickets = res;
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Failed to load tickets';
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   loadResolvedTickets() {

@@ -1,45 +1,100 @@
-<h2>Admin Panel</h2>
+<div class="page-container">
+  
+  <div class="content-card">
+    
+    <header class="card-header">
+      <div class="header-text">
+        <h2>User Management</h2>
+        <p>Manage access, roles, and account status.</p>
+      </div>
 
-<select [(ngModel)]="selectedRole" (change)="loadUsers()">
-  <option value="ROLE_USER">Users</option>
-  <option value="ROLE_AGENT">Agents</option>
-  <option value="ROLE_MANAGER">Managers</option>
-</select>
+      <div class="filter-wrapper">
+        <label>Filter by Role:</label>
+        <div class="select-wrapper">
+          <select [(ngModel)]="selectedRole" (change)="loadUsers()" class="main-select">
+            <option value="ROLE_USER">Users</option>
+            <option value="ROLE_AGENT">Agents</option>
+            <option value="ROLE_MANAGER">Managers</option>
+          </select>
+          <i class="fas fa-chevron-down arrow-icon"></i>
+        </div>
+      </div>
+    </header>
 
-<p *ngIf="loading">Loading...</p>
+    <div class="loading-state" *ngIf="loading">
+      <div class="spinner"></div>
+      <span>Fetching user data...</span>
+    </div>
 
-<table *ngIf="!loading && users.length>0">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Status</th>
-      <th>Role</th>
-      <th>Action</th>
-    </tr>
-  </thead>
+    <div class="empty-state" *ngIf="!loading && users.length === 0">
+      <i class="fas fa-users-slash"></i>
+      <p>No users found for this role.</p>
+    </div>
 
-  <tbody>
-    <tr *ngFor="let u of users">
-      <td>{{ u.name }}</td>
-      <td>{{ u.email }}</td>
-      <td>{{ u.active ? 'Active' : 'Inactive' }}</td>
-           <td>
-        <select
-          [ngModel]="u.role"
-          (ngModelChange)="changeRole(u, $event)"
-          [disabled]="u.role === 'ROLE_ADMIN'"
-        >
-          <option value="ROLE_USER">USER</option>
-          <option value="ROLE_AGENT">AGENT</option>
-          <option value="ROLE_MANAGER">MANAGER</option>
-        </select>
-      </td>
-      <td>
-        <button (click)="toggleStatus(u)">
-          {{ u.active ? 'Deactivate' : 'Activate' }}
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+    <div class="table-responsive" *ngIf="!loading && users.length > 0">
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th width="25%">User Details</th>
+            <th width="20%">Status</th>
+            <th width="25%">Assign Role</th>
+            <th width="20%" class="text-right">Actions</th>
+            <th width="5%"></th> 
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of users" class="user-row">
+            
+            <td>
+              <div class="user-info">
+                <div class="avatar-circle">{{ u.name.charAt(0) | uppercase }}</div>
+                <div>
+                  <div class="user-name">{{ u.name }}</div>
+                  <div class="user-email">{{ u.email }}</div>
+                </div>
+              </div>
+            </td>
+
+            <td>
+              <span class="status-badge" [ngClass]="u.active ? 'status-active' : 'status-inactive'">
+                <i class="fas" [ngClass]="u.active ? 'fa-check-circle' : 'fa-ban'"></i>
+                {{ u.active ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+
+            <td>
+              <div class="table-select-wrapper">
+                <select 
+                  [ngModel]="u.role" 
+                  (ngModelChange)="changeRole(u, $event)"
+                  [disabled]="u.role === 'ROLE_ADMIN'"
+                  class="table-select"
+                >
+                  <option value="ROLE_USER">User</option>
+                  <option value="ROLE_AGENT">Agent</option>
+                  <option value="ROLE_MANAGER">Manager</option>
+                </select>
+              </div>
+            </td>
+
+            <td class="text-right">
+              <button 
+                class="btn-action" 
+                [ngClass]="u.active ? 'btn-deactivate' : 'btn-activate'"
+                (click)="toggleStatus(u)"
+              >
+                {{ u.active ? 'Deactivate' : 'Activate' }}
+              </button>
+            </td>
+<td class="text-center">
+              <button class="btn-arrow" (click)="viewDashboard(u)" title="View Dashboard">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </td>
+          </tr>
+         </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

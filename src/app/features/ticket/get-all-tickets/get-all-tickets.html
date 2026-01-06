@@ -49,7 +49,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let t of tickets" (click)="viewTicket(t.ticketId)">
+ <tr *ngFor="let t of filteredTickets" (click)="viewTicket(t.ticketId)">
+
         
         <td><span class="col-id">#{{ t.ticketId.substring(0,6) }}</span></td>
         

@@ -5,7 +5,7 @@
     <p *ngIf="isAgent">You have done a great Job! </p>
   </div>
   
-  <button *ngIf="!isAgent" class="btn-create" (click)="goToCreate()">
+  <button *ngIf="(!isAdminView && !isAgent)" class="btn-create" (click)="goToCreate()">
     <i class="fas fa-plus"></i> Create Ticket
   </button>
 </div>
@@ -80,8 +80,8 @@
     <i class="far fa-folder-open"></i>
   </div>
   <h3>No Tickets Found</h3>
-  <p *ngIf="!isAgent">You haven't submitted any support tickets yet.</p>
-  <button *ngIf="!isAgent" class="btn-create" style="margin: 20px auto;" (click)="goToCreate()">
+  <p *ngIf="(!isAdminView && !isAgent)">You haven't submitted any support tickets yet.</p>
+  <button *ngIf="(!isAdminView && !isAgent)" class="btn-create" style="margin: 20px auto;" (click)="goToCreate()">
     Submit your first ticket
   </button>
 </div>

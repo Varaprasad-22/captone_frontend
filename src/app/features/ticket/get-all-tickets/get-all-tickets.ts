@@ -44,6 +44,7 @@ searchText: string = '';
       next: (res: TicketResponse[]) => {
                 console.log('All TICKETS RESPONSE:', res);
         this.tickets = res;
+          this.filteredTickets = res; 
         this.loading = false;
         this.cdr.detectChanges(); 
       },

@@ -20,24 +20,23 @@ export class TicketService {
       responseType: 'text'
     });
   }
-
-  getUserTickets() {
+getUserTickets(targetUserId?: string) {
     const user = this.authService.getUser();
-    const role = user.role ?? '';
-    const userId = user.id ?? '';
-    // const userId = localStorage.getItem('userId');
-    if (role === 'ROLE_AGENT') {
-      return this.http.get<any[]>(
-        `${this.baseUrl}/${userId}/getAgentTickets`
-
-      );
-    }
-
+    
+    const userId = targetUserId || user.id || '';
+    
     return this.http.get<any[]>(
       `${this.baseUrl}/${userId}/getTickets`
     );
   }
+  getAgentTickets(agentId?: string) {
+    const user = this.authService.getUser();
+    const id = agentId || user.id || '';
 
+    return this.http.get<any[]>(
+      `${this.baseUrl}/${id}/getAgentTickets`
+    );
+  }
     getAgentResolvedTickets(){
     const user = this.authService.getUser();
     const agentId = user.id ?? '';
@@ -58,7 +57,6 @@ export class TicketService {
   }
 
 
-  // ticket.service.ts
   downloadAttachment(attachmentId: string) {
     return this.http.get(`${this.baseUrl}/attachments/view/${attachmentId}`, {
       responseType: 'blob'

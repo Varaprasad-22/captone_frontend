@@ -35,12 +35,12 @@ export class AdminDashboardService {
         return {
 
           totalUsers: usersPage.totalElements,
-          agents: users.filter((u:any) => u.role?.name === 'ROLE_AGENT').length,
-          managers: users.filter((u:any) => u.role?.name === 'ROLE_MANAGER').length,
+          agents: users.filter((u:any) => u.role === 'ROLE_AGENT').length,
+          managers: users.filter((u:any) => u.role === 'ROLE_MANAGER').length,
 
           totalTickets: tickets.length,
           open: tickets.filter(t => t.status === 'OPEN').length,
-          inProgress: tickets.filter(t => t.status === 'IN_PROGRESS').length,
+          inProgress: tickets.filter(t => t.status === 'INPROGRESS').length,
           resolved: tickets.filter(t => t.status === 'RESOLVED').length,
           closed: tickets.filter(t => t.status === 'CLOSED').length,
           escalated: tickets.filter(t => t.status === 'ESCALATED').length,

@@ -36,7 +36,7 @@ export class OnSpecificTicket {
   showStatusModal = false;
   selectedStatus = '';
   statuses = [
-    'OPEN', 'ASSIGNED', 'IN_PROGRESS', 'RESOLVED',
+    'OPEN', 'ASSIGNED', 'INPROGRESS', 'RESOLVED',
     'CLOSED', 'FAILED', 'ESCALATED', 'BREACHED', 'REOPEN'
   ];
 
@@ -138,7 +138,11 @@ export class OnSpecificTicket {
         this.ticket.status = this.selectedStatus;
         this.showStatusModal = false;
         this.cdr.detectChanges();
-     
+        if(this.isManagerOrAdmin)
+        this.router.navigate(['/getAllTickets'])
+        else
+        this.router.navigate(['/tickets/userTicket'])
+        
       });
   }
 
