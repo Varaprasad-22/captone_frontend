@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class GetAllTickets {
 tickets: TicketResponse[] = [];
+filteredTickets: TicketResponse[] = [];
   loading = true;
   errorMessage = '';
 
@@ -21,7 +22,9 @@ tickets: TicketResponse[] = [];
 
   selectedTicketId: string | null = null;
   agentId = '';
-
+searchText: string = '';
+  statusFilter: string = 'ALL';
+  priorityFilter: string = 'ALL';
   constructor(
     private ticketService: TicketService,
     private router: Router,
@@ -51,6 +54,25 @@ tickets: TicketResponse[] = [];
     });
   }
 
+  applyFilter() {
+    this.filteredTickets = this.tickets.filter(ticket => {
+      
+      const matchesSearch = 
+        this.searchText === '' || 
+        ticket.title.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        ticket.ticketId.toLowerCase().includes(this.searchText.toLowerCase());
+
+      const matchesStatus = 
+        this.statusFilter === 'ALL' || 
+        ticket.status === this.statusFilter;
+
+      const matchesPriority = 
+        this.priorityFilter === 'ALL' || 
+        ticket.priority === this.priorityFilter;
+this.cdr.detectChanges();
+      return matchesSearch && matchesStatus && matchesPriority;
+    });
+  }
   viewTicket(ticketId: string): void {
     this.router.navigate(['/viewTicket', ticketId]);
   }

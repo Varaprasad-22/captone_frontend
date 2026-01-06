@@ -6,9 +6,11 @@
 </div>
 
 <div class="controls-bar">
-  <input type="text" class="search-input" placeholder="Search by Ticket ID or Title..." />
+  <input type="text" class="search-input" placeholder="Search by Ticket ID or Title..." [(ngModel)]="searchText"
+    (input)="applyFilter()"/>
   
-  <select class="filter-select">
+  <select class="filter-select" [(ngModel)]="statusFilter" 
+    (change)="applyFilter()">
     <option value="ALL">All Statuses</option>
     <option value="OPEN">Open</option>
     <option value="IN_PROGRESS">In Progress</option>
@@ -16,7 +18,8 @@
     <option value="BREACHED">Breached</option>
   </select>
 
-  <select class="filter-select">
+  <select class="filter-select" [(ngModel)]="priorityFilter" 
+    (change)="applyFilter()">
     <option value="ALL">All Priorities</option>
     <option value="HIGH">High</option>
     <option value="MEDIUM">Medium</option>

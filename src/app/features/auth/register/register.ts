@@ -1,12 +1,12 @@
 import { Component ,ChangeDetectorRef} from '@angular/core';
 import { AuthService } from '../../../core/services/auth.services';
-import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule,CommonModule,RouterModule],
+  imports: [FormsModule,CommonModule,RouterModule,ReactiveFormsModule],
   templateUrl: './register.html',
   standalone:true,
   styleUrl: './register.css',
@@ -22,7 +22,8 @@ export class Register {
 
   constructor(private authService: AuthService,
     private cdr:ChangeDetectorRef,
-    private fb:FormBuilder
+    private fb:FormBuilder,
+    private router:Router
   ) {
      this.form = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
@@ -37,7 +38,7 @@ export class Register {
 
     this.loading = true;
 
-    this.authService.register(this.form)
+    this.authService.register(this.form.value)
       .subscribe({
         next: (res: any) => {
           this.message = res;
@@ -47,16 +48,23 @@ export class Register {
         email: '',
         password: ''
       });
+       setTimeout(() => {
+    this.router.navigate(['/login']);
+  }, 4000);
           this.cdr.detectChanges();
         },
+        
         error: (err) => {
+            this.loading = false;
+
           if (err.status === 400 && err.error?.errors?.length) {
             this.error = err.error.errors[0].defaultMessage;
           } else {
-            this.error = err.error || 'Registration failed';
+            this.error = err.message || 'Registration failed';
           }
-          this.loading = false;
-          
+        
+           const parsed = JSON.parse(err.error);
+          this.error = parsed.message
           this.cdr.detectChanges();
         }
       });

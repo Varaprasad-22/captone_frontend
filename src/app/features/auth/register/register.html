@@ -1,7 +1,7 @@
 <div class="split-wrapper">
 
   <div class="visual-side">
-    
+
     <div class="brand-content">
       <div class="logo-icon">
         <i class="fas fa-ticket-alt"></i>
@@ -13,57 +13,70 @@
 
   <div class="form-side">
     <div class="form-container">
-      
+
       <div class="form-header">
         <h2>Create Account</h2>
         <p>Get started with your free account today.</p>
       </div>
 
-      <form (ngSubmit)="submit()" #f="ngForm">
+      <form (ngSubmit)="submit()" [formGroup]="form">
 
         <div class="input-group">
           <label class="input-label">Full Name</label>
-          <input 
-            type="text" 
-            class="modern-input" 
-            name="name" 
-            [(ngModel)]="form.name" 
-            placeholder="John Doe"
-            required 
-            minlength="3"
-          >
+          <input type="text" class="modern-input" formControlName="name" placeholder="John Doe" required minlength="3">
           <i class="fas fa-user input-icon"></i>
+          <small style="color: red;" class="error-text" *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
+
+            <span *ngIf="form.get('name')?.errors?.['required']">
+              Name is required
+            </span>
+
+            <span *ngIf="form.get('name')?.errors?.['minlength']">
+              Name must be at least 3 characters
+            </span>
+
+          </small>
         </div>
 
         <div class="input-group">
           <label class="input-label">Email Address</label>
-          <input 
-            type="email" 
-            class="modern-input" 
-            name="email" 
-            [(ngModel)]="form.email" 
-            placeholder="john@example.com"
-            required 
-            email
-          >
+          <input type="email" class="modern-input" formControlName="email" placeholder="john@example.com" required
+            email>
           <i class="fas fa-envelope input-icon"></i>
+
+          <small style="color: red;" class="error-text" *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+
+            <span *ngIf="form.get('email')?.errors?.['required']">
+              Email is required
+            </span>
+
+            <span *ngIf="form.get('email')?.errors?.['email']">
+              Enter a valid email address
+            </span>
+
+          </small>
         </div>
 
         <div class="input-group">
           <label class="input-label">Password</label>
-          <input 
-            type="password" 
-            class="modern-input" 
-            name="password" 
-            [(ngModel)]="form.password" 
-            placeholder="Min 8 characters"
-            required 
-            minlength="8"
-          >
+          <input type="password" class="modern-input" formControlName="password" placeholder="Min 8 characters" required
+            minlength="8">
           <i class="fas fa-lock input-icon"></i>
+
+          <small style="color: red;" class="error-text" *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
+
+            <span *ngIf="form.get('password')?.errors?.['required']">
+              Password is required
+            </span>
+
+            <span *ngIf="form.get('password')?.errors?.['minlength']">
+              Password must be at least 8 characters
+            </span>
+
+          </small>
         </div>
 
-        <button type="submit" class="btn-register" [disabled]="loading || f.invalid">
+        <button type="submit" class="btn-register" [disabled]="loading || form.invalid">
           {{ loading ? 'Creating Account...' : 'Sign Up' }}
         </button>
 
