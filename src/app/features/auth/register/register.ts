@@ -64,7 +64,7 @@ export class Register {
           }
         
            const parsed = JSON.parse(err.error);
-          this.error = parsed.message
+          this.error = parsed.message || 'Registration failed';
           this.cdr.detectChanges();
         }
       });

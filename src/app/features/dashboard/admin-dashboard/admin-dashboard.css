@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:host {
+  display: block;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding: 30px;
+}
+
+.dashboard-header {
+  margin-bottom: 25px;
+  animation: slideDown 0.5s ease-out;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.dashboard-header h1 {
+  font-size: 26px;
+  color: #1a202c;
+  margin: 0;
+  font-weight: 700;
+}
+
+.dashboard-header p {
+  color: #718096;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+.date-badge {
+  background: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4a5568;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title {
+  font-size: 14px;
+  text-transform: uppercase;
+  color: #a0aec0;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  padding-left: 5px;
+  border-left: 3px solid #cbd5e0;
+  line-height: 1;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #edf2f7;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.stat-info h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #718096;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-info h2 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
+  line-height: 1;
+}
+
+.icon-box {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  transition: transform 0.3s ease;
+}
+
+
+.theme-users { border-bottom: 4px solid #0052cc; }
+.theme-users .icon-box { background: #deebff; color: #0052cc; }
+
+.theme-agents { border-bottom: 4px solid #00b8d9; }
+.theme-agents .icon-box { background: #e6fcff; color: #00b8d9; }
+
+.theme-managers { border-bottom: 4px solid #6554c0; }
+.theme-managers .icon-box { background: #eae6ff; color: #6554c0; }
+
+.theme-total { border-bottom: 4px solid #4a5568; }
+.theme-total .icon-box { background: #edf2f7; color: #2d3748; }
+
+.theme-open { border-bottom: 4px solid #3182ce; }
+.theme-open .icon-box { background: #ebf8ff; color: #3182ce; }
+
+.theme-progress { border-bottom: 4px solid #805ad5; }
+.theme-progress .icon-box { background: #faf5ff; color: #805ad5; }
+
+.theme-resolved { border-bottom: 4px solid #38a169; }
+.theme-resolved .icon-box { background: #f0fff4; color: #38a169; }
+
+.theme-closed { border-bottom: 4px solid #2f855a; }
+.theme-closed .icon-box { background: #c6f6d5; color: #2f855a; }
+
+.theme-escalated { border-bottom: 4px solid #dd6b20; }
+.theme-escalated .icon-box { background: #fffaf0; color: #dd6b20; }
+
+.theme-breached { border-bottom: 4px solid #e53e3e; }
+.theme-breached .icon-box { background: #fff5f5; color: #e53e3e; }
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  color: #718096;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #edf2f7;
+  border-top: 5px solid #3182ce;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 600px) {
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+}

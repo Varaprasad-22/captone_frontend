@@ -51,6 +51,9 @@ export class AdminRegister {
         },
         error: (err) => {
           this.error = err.error || 'Registration failed';
+          
+           const parsed = JSON.parse(err.error);
+          this.error = parsed.message || 'Registration failed';
           this.loading = false;
           this.cdr.detectChanges();
         }

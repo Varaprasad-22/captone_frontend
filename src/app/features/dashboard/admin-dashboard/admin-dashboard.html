@@ -1,25 +1,128 @@
-<h2>System Dashboard</h2>
+<div *ngIf="loading" class="loading-container">
+  <div class="spinner"></div>
+  <p>Loading System Data...</p>
+</div>
 
-<ng-container *ngIf="!loading; else loadingTpl">
+<div class="dashboard-wrapper" *ngIf="!loading">
+  
+  <header class="dashboard-header">
+    <div class="header-content">
+      <div>
+        <h1>System Administration</h1>
+        <p>Global overview of users, agents, and ticket health.</p>
+      </div>
+      <div class="date-badge">
+        <i class="far fa-calendar-alt"></i> Today
+      </div>
+    </div>
+  </header>
 
-  <div class="dashboard">
+  <h3 class="section-title">User Metrics</h3>
+  <div class="stats-grid">
+    
+    <div class="stat-card theme-users">
+      <div class="stat-info">
+        <h4>Total Users</h4>
+        <h2>{{ dashboard.totalUsers }}</h2>
+      </div>
+      <div class="icon-box">
+        <i class="fas fa-users"></i>
+      </div>
+    </div>
 
-    <div class="card total"><span>Total Users</span><strong>{{ dashboard.totalUsers }}</strong></div>
-    <div class="card agent"><span>Agents</span><strong>{{ dashboard.agents }}</strong></div>
-    <div class="card manager"><span>Managers</span><strong>{{ dashboard.managers }}</strong></div>
+    <div class="stat-card theme-agents">
+      <div class="stat-info">
+        <h4>Active Agents</h4>
+        <h2>{{ dashboard.agents }}</h2>
+      </div>
+      <div class="icon-box">
+        <i class="fas fa-headset"></i>
+      </div>
+    </div>
 
-    <div class="card ticket"><span>Total Tickets</span><strong>{{ dashboard.totalTickets }}</strong></div>
-    <div class="card open"><span>Open</span><strong>{{ dashboard.open }}</strong></div>
-    <div class="card progress"><span>In Progress</span><strong>{{ dashboard.inProgress }}</strong></div>
-    <div class="card resolved"><span>Resolved</span><strong>{{ dashboard.resolved }}</strong></div>
-    <div class="card closed"><span>Closed</span><strong>{{ dashboard.closed }}</strong></div>
-    <div class="card escalated"><span>Escalated</span><strong>{{ dashboard.escalated }}</strong></div>
-    <div class="card breached"><span>Breached</span><strong>{{ dashboard.breached }}</strong></div>
-
+    <div class="stat-card theme-managers">
+      <div class="stat-info">
+        <h4>Managers</h4>
+        <h2>{{ dashboard.managers }}</h2>
+      </div>
+      <div class="icon-box">
+        <i class="fas fa-user-tie"></i>
+      </div>
+    </div>
   </div>
 
-</ng-container>
+  <h3 class="section-title">Ticket Health</h3>
+  <div class="stats-grid">
 
-<ng-template #loadingTpl>
-  <div>Loading...</div>
-</ng-template>
+    <div class="stat-card theme-total">
+      <div class="stat-info">
+        <h4>Total Tickets</h4>
+        <h2>{{ dashboard.totalTickets }}</h2>
+      </div>
+      <div class="icon-box">
+        <i class="fas fa-ticket-alt"></i>
+      </div>
+    </div>
+
+    <div class="stat-card theme-open">
+      <div class="stat-info">
+        <h4>Open</h4>
+        <h2>{{ dashboard.open }}</h2>
+      </div>
+      <div class="icon-box">
+        <i class="fas fa-envelope-open-text"></i>
+      </div>
+    </div>
+
+    <div class="stat-card theme-progress">
+      <div class="stat-info">
+        <h4>In Progress</h4>
+        <h2>{{ dashboard.inProgress }}</h2>
+      </div>
+      <div class="icon-box">
+        <i class="fas fa-spinner fa-spin"></i>
+      </div>
+    </div>
+
+    <div class="stat-card theme-resolved">
+      <div class="stat-info">
+        <h4>Resolved</h4>
+        <h2>{{ dashboard.resolved }}</h2>
+      </div>
+      <div class="icon-box">
+        <i class="fas fa-check-circle"></i>
+      </div>
+    </div>
+
+    <div class="stat-card theme-closed">
+      <div class="stat-info">
+        <h4>Closed</h4>
+        <h2>{{ dashboard.closed }}</h2>
+      </div>
+      <div class="icon-box">
+        <i class="fas fa-archive"></i>
+      </div>
+    </div>
+
+    <div class="stat-card theme-escalated">
+      <div class="stat-info">
+        <h4>Escalated</h4>
+        <h2>{{ dashboard.escalated }}</h2>
+      </div>
+      <div class="icon-box">
+        <i class="fas fa-level-up-alt"></i>
+      </div>
+    </div>
+
+    <div class="stat-card theme-breached">
+      <div class="stat-info">
+        <h4>SLA Breached</h4>
+        <h2>{{ dashboard.breached }}</h2>
+      </div>
+      <div class="icon-box">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+    </div>
+
+  </div>
+</div>
