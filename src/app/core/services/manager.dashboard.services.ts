@@ -15,7 +15,7 @@ export class ManagerDashboardService {
         return {
           total: tickets.length,
           open: tickets.filter(t => t.status === 'OPEN').length,
-          inProgress: tickets.filter(t => t.status === 'IN_PROGRESS').length,
+          inProgress: tickets.filter(t => t.status === 'INPROGRESS').length,
           resolved: tickets.filter(t => t.status === 'RESOLVED').length,
           closed: tickets.filter(t => t.status === 'CLOSED').length,
           escalated: tickets.filter(t => t.status === 'ESCALATED').length,

@@ -136,7 +136,7 @@ this.mode =
       next: () => {
         this.showToast('success', `Ticket successfully ${this.mode}ed to ${this.selectedAgentName}!`);
         setTimeout(() => {
-          this.router.navigate(['/manager/all-tickets']);
+          this.router.navigate(['/getAllTickets']);
         }, 1500);
       },
       error: (err) => {
