@@ -85,6 +85,20 @@
           Reassign Agent
         </button>
       </ng-container>
+
+         
+      <button
+  *ngIf="showStartWorking()"
+  class="btn-action"
+  (click)="startWorking()">
+  <i class="fas fa-play" style="margin-right: 6px;"></i> Start Working
+</button>
+<button
+  *ngIf="showCloseTicket()"
+  class="btn-action danger"
+  (click)="closeTicket()">
+  <i class="fas fa-times" style="margin-right: 6px;"></i> Close Ticket
+</button>
     </div>
 
     <div class="sidebar-card">

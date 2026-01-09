@@ -15,6 +15,7 @@ import { Register } from './features/auth/register/register';
 import { AgentDashboard } from './features/dashboard/agent-dashboard/agent-dashboard';
 import { ManagerDashboard } from './features/dashboard/manager-dashboard/manager-dashboard';
 import { AdminDashboard } from './features/dashboard/admin-dashboard/admin-dashboard';
+import { SlaSettings } from './features/sla-settings/sla-settings';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
@@ -32,7 +33,7 @@ export const routes: Routes = [
 //
   { path: 'admin/user-tickets/:id', component: GetMyTicket, canActivate: [authGuard] },
   { path: 'admin/agent-tickets/:id', component: GetMyTicket, canActivate: [authGuard] },
-
+{path:'admin/slaRules',component:SlaSettings,canActivate:[authGuard]},
     { path: 'tickets/resolvedTickets', component: GetMyTicket, canActivate: [authGuard] },
   { path: 'viewTicket/:id', component: OnSpecificTicket, canActivate: [authGuard] },
   { path: 'allopentickets', component: GetAllOpenTickets, canActivate: [authGuard] },

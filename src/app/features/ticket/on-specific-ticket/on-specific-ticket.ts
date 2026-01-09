@@ -134,7 +134,7 @@ export class OnSpecificTicket {
 
   confirmStatusChange() {
     this.ticketService.updateTicketStatus(this.ticketId, this.selectedStatus)
-      .subscribe(() => {
+      .subscribe( { next:(response:any)=>{
         this.ticket.status = this.selectedStatus;
         this.showStatusModal = false;
         this.cdr.detectChanges();
@@ -142,7 +142,13 @@ export class OnSpecificTicket {
         this.router.navigate(['/getAllTickets'])
         else
         this.router.navigate(['/tickets/userTicket'])
-        
+      },
+      error:(err:any)=>{
+        if(this.isManagerOrAdmin)
+        this.router.navigate(['/getAllTickets'])
+        else
+        this.router.navigate(['/tickets/userTicket'])
+      }
       });
   }
 
@@ -154,4 +160,30 @@ export class OnSpecificTicket {
   reassignTicket(ticketId: string) {
     this.router.navigate(['/manager/assign', ticketId], { queryParams: { mode: 'reassign' } });
   }
+
+
+  //now for the  status thing
+    showStartWorking(): boolean {
+  return (
+    this.role === 'ROLE_AGENT' &&
+    (this.ticket?.status === 'OPEN' || this.ticket?.status === 'ASSIGNED')
+  );
+}
+
+showCloseTicket(): boolean {
+  return (
+    this.role === 'ROLE_AGENT' &&
+    this.ticket?.status !== 'CLOSED'
+  );
+}
+
+startWorking() {
+  this.selectedStatus = 'INPROGRESS';
+  this.confirmStatusChange(); 
+}
+
+closeTicket() {
+  this.selectedStatus = 'CLOSED';
+  this.confirmStatusChange(); 
+}
 }

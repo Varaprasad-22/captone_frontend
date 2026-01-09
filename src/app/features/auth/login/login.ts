@@ -46,7 +46,9 @@ export class LoginComponent {
         this.cdr.detectChanges();
       },
 
-      error: err => this.errorMessage = err.error?.message || 'Login failed'
+      error: err => {this.errorMessage = err.error|| 'Login failed',
+        this.cdr.detectChanges();
+      }
     });
   }
 }

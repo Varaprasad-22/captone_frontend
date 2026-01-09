@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="header">
+    <h2>SLA Configuration</h2>
+    <p>Define response and resolution targets based on ticket priority.</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-txt">Loading SLA Rules...</div>
+
+  <div class="rules-grid">
+    
+    <div *ngFor="let rule of slaRules" class="rule-card" [ngClass]="rule.priority">
+      
+      <div class="card-header">
+        <span class="priority-badge">{{ rule.priority }}</span>
+        
+      </div>
+
+      <div class="card-body">
+        <div class="input-group">
+          <label>Response Time <small>(Minutes)</small></label>
+          <input type="number" [(ngModel)]="rule.responseMinutes" min="1">
+        </div>
+
+        <div class="input-group">
+          <label>Resolution Time <small>(Hours)</small></label>
+          <input type="number" [(ngModel)]="rule.resolutionHours" min="1">
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="actions" *ngIf="!loading">
+    <button class="btn-save" (click)="saveChanges()" [disabled]="saving">
+      <i class="fas fa-save"></i> {{ saving ? 'Saving...' : 'Save Configuration' }}
+    </button>
+  </div>
+</div>
